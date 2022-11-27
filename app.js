@@ -44,9 +44,7 @@ app.use(
         'child-src': ['blob:'],
         'connect-src': [
           'https://*.fly.dev',
-          'http://localhost:8080',
           `http://localhost:${process.env.PORT}`,
-          `http://localhost:3000`
         ],
         'default-src': ["'self'"],
         'font-src': ["'self'", 'https://fonts.gstatic.com'],
@@ -77,7 +75,7 @@ app.use(compression()); //added the compression middleware to help compress text
 //Routes prefix
 app.use(`${API_V2}/articles`, require("./src/routes/articles.route"));
 // app.use(``, require("./src/routes/comments.route"));
-app.use(`${API_V2}/screenplayreviews`, require("./src/routes/screenplayreviews.route"));
+// app.use(`${API_V2}/screenplayreviews`, require("./src/routes/screenplayreviews.route"));
 app.use(`${API_V2}/screenplays`, require("./src/routes/screenplays.route"));
 // app.use(``, require("./src/routes/users.route"));
 // app.use(``, require("./src/routes/watchservices.route"));

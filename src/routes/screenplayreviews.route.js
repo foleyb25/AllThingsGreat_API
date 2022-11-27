@@ -8,10 +8,4 @@ const router = express.Router();
 const Screenplayreview = require("../controllers/screenplayreviews.controller");
 const {jwtCheck} = require("../lib/auth.lib")
 
-router.get(``, jwtCheck, Screenplayreview.getAll)
-router.get(`/:id`, Screenplayreview.getById);
-router.post(``, Screenplayreview.create);
-router.patch(`/:id`, Screenplayreview.update);
-// router.delete(`${screenplayreview_slug}:id`, Screenplayreview.remove);
-
 module.exports = router;

@@ -35,81 +35,74 @@ async function getUserByAuthID(req,res) {
     return res.status(200).json(data);
 }
 
-    async function getById(req,res) {
-        const id = req.params.id;
-        const writer = await writerService.getSingle(id)
-        return res.status(200).json(writer);
-    }
-
-
-    /**
-     * @swagger
-     * /api/v2/writers:
-     *  post:
-     *      summary: Create a new writer
-     *      description: Create a new writer and store in the database
-     *      requestBody:
-     *            required: true
-     *            description: writer data in json object
-     *            content:
-     *              application/json:
-     *                  schema:
-     *                      type: object
-     *                      properties:
-     *                          auth0_id:
-     *                              type: string
-     *                              example: ""
-     *                          bio:
-     *                              type: string
-     *                              example: bio
-     *                          instagram_link:
-     *                              type: string
-     *                              example: ""
-     *                          twitter_lin:
-     *                              type: string
-     *                              example: bio
-     *                          snapchat_link:
-     *                              type: string
-     *                              example: ""
-     *                          tiktok_link:
-     *                              type: string
-     *                              example: bio
-     *                          profile_image_url:
-     *                              type: string
-     *                              example: ""
-     *                          full_name:
-     *                              type: string
-     *                              example: bio
-     *                          nick_name:
-     *                              type: string
-     *                              example: ""
-     *                          is_super_admin:
-     *                              type: string
-     *                              example: false
-     *                          last_seen_at:
-     *                              type: string
-     *                              example: ""
-     *                          is_archived:
-     *                              type: string
-     *                              example: false
-     *                          created_at:
-     *                              type: number
-     *                              example: 231243423525
-     *                          updatedAt:
-     *                              type: number
-     *                              example: 1232443463453
-     *                          
-     *                          
-     *      responses:
-     *          200:
-     *              description: OK
-     * 
-     */
-    async function create(req,res) {
-        const writer = req.body;
-        const status = await writerService.create(writer)
-        return res.status(201).json({message: "Writer created successfully!"})
-    }
+/**
+ * @swagger
+ * /api/v2/writers:
+ *  post:
+ *      summary: Create a new writer
+ *      description: Create a new writer and store in the database
+ *      requestBody:
+ *            required: true
+ *            description: writer data in json object
+ *            content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          auth0_id:
+ *                              type: string
+ *                              example: ""
+ *                          bio:
+ *                              type: string
+ *                              example: bio
+ *                          instagram_link:
+ *                              type: string
+ *                              example: ""
+ *                          twitter_lin:
+ *                              type: string
+ *                              example: bio
+ *                          snapchat_link:
+ *                              type: string
+ *                              example: ""
+ *                          tiktok_link:
+ *                              type: string
+ *                              example: bio
+ *                          profile_image_url:
+ *                              type: string
+ *                              example: ""
+ *                          full_name:
+ *                              type: string
+ *                              example: bio
+ *                          nick_name:
+ *                              type: string
+ *                              example: ""
+ *                          is_super_admin:
+ *                              type: string
+ *                              example: false
+ *                          last_seen_at:
+ *                              type: string
+ *                              example: ""
+ *                          is_archived:
+ *                              type: string
+ *                              example: false
+ *                          created_at:
+ *                              type: number
+ *                              example: 231243423525
+ *                          updatedAt:
+ *                              type: number
+ *                              example: 1232443463453
+ *                          
+ *                          
+ *      responses:
+ *          200:
+ *              description: OK
+ * 
+ */
+async function create(req,res) {
+    const writer = req.body;
+    const status = await writerService.create(writer)
+    return res.status(201).json({message: "Writer created successfully!"})
+}
 
 /**
  * @swagger
@@ -181,21 +174,8 @@ async function update(req,res) {
     return res.status(200).json({message: "Writer Updated Successfully"})
 }
 
-    // async function remove(req,res) {
-    //     const id = req.params.id;
-    //     try {
-    //         const status = await writerService.remove(id)
-    //         res.status(200).json({message: "Writer deleted succesfully"})
-    //     } catch(err) {
-    //         res.status(404).json({message: "There was an error deleting Writer"})
-    //     }
-    // }
-
 module.exports = autoCatch({
-    //getAll,
-    getById,
     create,
     update,
     getUserByAuthID
-    // remove
 })

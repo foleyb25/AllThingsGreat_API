@@ -9,8 +9,6 @@ const Article = require("../controllers/articles.controller");
 const {jwtCheck} = require("../lib/auth.lib")
 const {upload} = require("../lib/multer.lib")
 
-http://localhost:5002/api/v2/articles/uploadImage
-
 // router.get(``, Article.getAll)
 // router.get(`/:id`, Article.getById);
 // router.post(``, Article.create);
