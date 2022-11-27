@@ -21,9 +21,15 @@ const screenplayService = require("../services/screenplays.service.js")
  *        - in: path
  *          name: pageNum
  *          required: true
- *          description: PageNum
+ *          description: Page number to search
  *          schema:
  *            type: integer
+ *        - in: path
+ *          name: searchString
+ *          required: true
+ *          description: Title of screenplay to search
+ *          schema:
+ *            type: string
  *      responses:
  *          200:
  *              description: OK

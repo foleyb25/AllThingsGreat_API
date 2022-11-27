@@ -19,6 +19,7 @@
     "@logtail/node": "^0.1.12",
     "@logtail/winston": "^0.1.13",
     "aws-sdk": "^2.1261.0",
+    "axios": "^1.2.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
