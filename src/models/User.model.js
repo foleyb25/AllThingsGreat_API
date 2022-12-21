@@ -114,4 +114,4 @@ const userSchema = mongoose.Schema({
     //by default. Set false here to disable this functionality.
 })
 
-module.exports = mongoose.model("User", userSchema, 'user');
+module.exports = mongoose.model("User", userSchema);

@@ -13,5 +13,6 @@ const {upload} = require("../lib/multer.lib")
 // router.get(`/:id`, Article.getById);
 // router.post(``, Article.create);
 router.post(`/uploadImage`, [jwtCheck, upload.single("file")] , Article.uploadArticleImage)
+router.get(`/getImageUrls/:id`, jwtCheck, Article.getBucketUrls)
 
 module.exports = router;

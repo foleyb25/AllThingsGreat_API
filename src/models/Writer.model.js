@@ -97,4 +97,4 @@ const writerSchema = mongoose.Schema({
 }
 )
 
-module.exports = mongoose.model("writer", writerSchema, 'writer');
+module.exports = mongoose.model("Writer", writerSchema);

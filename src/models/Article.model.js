@@ -11,14 +11,6 @@ const mongoose = require('mongoose');
 
 const articleSchema = mongoose.Schema({
 
-    numComments: {
-        type: 'number', default: 0
-    },
-
-    views: {
-        type: 'number', default:0
-    },
-
     rating: {
         type: 'number', default: 0
     },
@@ -78,4 +70,4 @@ const articleSchema = mongoose.Schema({
     //by default. Set false here to disable this functionality.
 })
 
-module.exports = mongoose.model("Article", articleSchema, 'article');
+module.exports = mongoose.model("Article", articleSchema);

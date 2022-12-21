@@ -8,7 +8,7 @@ https://www.coreycleary.me/what-is-the-difference-between-controllers-and-servic
 */
 
 const Article = require("../models/Article.model")
-const fileUploader = require("../utils/fileUploader.helper")
+const fileUploader = require("../utils/AWS.helper")
 // const db = require('./db.service');
 // const helper = require('../utils/helper.util');
 // const config = require('../configs/general.config');

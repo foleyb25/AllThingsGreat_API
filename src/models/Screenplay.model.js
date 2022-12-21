@@ -177,4 +177,4 @@ const screenplaySchema = mongoose.Schema({
     //by default. Set false here to disable this functionality.
 })
 
-module.exports = mongoose.model("screenplay", screenplaySchema, 'screenplay');
+module.exports = mongoose.model("Screenplay", screenplaySchema);
