@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema({
   
       ratedArticles: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Article'
+        ref: 'articles'
       },
   
       emailAddress: {
@@ -114,4 +114,4 @@ const userSchema = mongoose.Schema({
     //by default. Set false here to disable this functionality.
 })
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("users", userSchema);

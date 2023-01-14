@@ -48,7 +48,7 @@ const articleSchema = mongoose.Schema({
 
     writer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Writer",
+        ref: "writers",
         required: true
     },
 
@@ -74,4 +74,4 @@ const articleSchema = mongoose.Schema({
     //by default. Set false here to disable this functionality.
 })
 
-module.exports = mongoose.model("Article", articleSchema);
+module.exports = mongoose.model("articles", articleSchema);

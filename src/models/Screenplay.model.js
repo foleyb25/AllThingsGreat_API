@@ -14,7 +14,7 @@ const screenplaySchema = mongoose.Schema({
         {
             writer_id: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Writer',
+                ref: 'writers',
             },
             score: {
                 type: 'number'
@@ -177,4 +177,4 @@ const screenplaySchema = mongoose.Schema({
     //by default. Set false here to disable this functionality.
 })
 
-module.exports = mongoose.model("Screenplay", screenplaySchema);
+module.exports = mongoose.model("screenplays", screenplaySchema);
