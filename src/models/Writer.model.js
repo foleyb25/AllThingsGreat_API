@@ -27,6 +27,11 @@ const writerSchema = mongoose.Schema({
         {}
     ],
 
+    profileImageUrl: {
+        type: 'string',
+        default: ''
+    },
+
     fullName: {
         type: 'string',
         default: '',

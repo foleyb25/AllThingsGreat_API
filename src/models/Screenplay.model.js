@@ -14,7 +14,7 @@ const screenplaySchema = mongoose.Schema({
         {
             writer_id: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'writers',
+                ref: 'Writer',
             },
             score: {
                 type: 'number'
