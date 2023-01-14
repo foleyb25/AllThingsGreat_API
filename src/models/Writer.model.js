@@ -10,13 +10,6 @@ https://mongoosejs.com/docs/api.html
 const mongoose = require('mongoose');
 
 const writerSchema = mongoose.Schema({
-
-    screenplayReviews: [
-        {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'screenplay.reviews',
-        }
-    ],
     
     auth0Id: {
         type: 'string',
