@@ -12,47 +12,51 @@ const mongoose = require('mongoose');
 const articleSchema = mongoose.Schema({
 
     rating: {
-        type: 'number', default: 0
+        type: 'number', 
+        default: 0
     },
 
     numberOfRatings: {
-        type: 'number', default: 0
+        type: 'number', 
+        default: 0
     },
 
     isArchived: {
-        type: 'boolean', default:false
+        type: 'boolean', 
+        default:false
     },
 
     isReviewed: {
-        type: 'boolean', default: false
+        type: 'boolean', 
+        default: false
     },
 
     title: {
-        type: 'string', default: ""
+        type: 'string', 
+        required: true
     },
 
     bodyHTML: {
-        type: 'string', default: ""
+        type: 'string', 
+        required: true
     },
 
     imageUrl: {
-        type: 'string',
-        default: ""
+        type: 'string', 
+        required: true
     },
 
     writer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Writer"
+        ref: "Writer",
+        required: true
     },
 
     category: {
-        type: 'string',
+        type: 'string', 
         default: "AllThingsGreat",
-    },
-    
-    previewText: {
-        type: 'string',
-        default: '',
+        required: true
+        
     },
 
     createdAt: { 

@@ -25,22 +25,7 @@ async function getSingle(id) {
     return article
 }
 
-async function create(article, localImage){
-
-    
-    if (localImage.isNoop) {
-        localImage.upload({noop: true})
-        throw "A file must be selected"
-    } else {
-        if (articleBody == "") {
-            throw "Must include content in article"
-        }
-        const fileUrl = await fileUploader.uploadfile(file)
-        article.imagePath = fileUrl
-    }     
-    // const userId = req.session.userId
-
-    
+async function create(article){
     const result = await Article.create(article);
     return result
 }

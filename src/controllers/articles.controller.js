@@ -50,7 +50,44 @@ async function getBucketUrls(req,res) {
     
 }
 
+/**
+ * @swagger
+ * /api/v2/articles/create:
+ *  post:
+ *      summary: create a new article
+ *      description: create a new article by recieving body data
+ *      responses:
+ *          200:
+ *              description: OK
+ * 
+ */
+async function create(req,res) {
+    const article = req.body
+    promisify(articleService.create(article)).then( (data) => {
+        return res.send(200)
+    }).catch( (err) => {
+
+    })
+    
+}
+
+// /api/v2/articles/
+async function getAll(req,res) {
+
+}
+
+// /api/v2/articles/:id
+async function getArticleById(req,res) {
+
+}
+
+// /api/v2/articles/user/:id
+async function getArticlesByUserId(req,res) {
+
+}
+
 module.exports = autoCatch({
     uploadArticleImage,
-    getBucketUrls
+    getBucketUrls,
+    create
 })

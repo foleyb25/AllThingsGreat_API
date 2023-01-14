@@ -11,14 +11,14 @@ const mongoose = require('mongoose');
 
 const writerSchema = mongoose.Schema({
 
-    reviews: [
+    screenplayReviews: [
         {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'screenplay.reviews',
         }
     ],
     
-    auth0_id: {
+    auth0Id: {
         type: 'string',
         defaults: '',
         required: true,
@@ -30,52 +30,26 @@ const writerSchema = mongoose.Schema({
         default: '',
     },
 
-    instagram_link: {
+    social: [
+        {}
+    ],
+
+    fullName: {
         type: 'string',
         default: '',
     },
 
-    twitter_link: {
+    nickName: {
         type: 'string',
         default: '',
     },
 
-    snapchat_link: {
-        type: 'string',
-        default: '',
-    },
-
-    tiktok_link: {
-        type: 'string',
-        default: '',
-    },
-
-    profile_image_url: {
-        type: 'string',
-        default: '',
-    },
-
-    full_name: {
-        type: 'string',
-        default: '',
-    },
-
-    nick_name: {
-        type: 'string',
-        default: '',
-    },
-
-    is_super_admin: {
+    isSuperAdmin: {
         type: 'boolean',
         default: false,
     },
 
-    last_seen_at: {
-        type: 'number',
-        default: 0,
-    },
-
-    is_archived: {
+    isArchived: {
         type: 'boolean',
         default: false,
     },
