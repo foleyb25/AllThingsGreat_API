@@ -70,7 +70,7 @@ const writerSchema = mongoose.Schema({
             defaults: ''
         },
         tags: [],
-        title: [],
+        moods: [],
 
     }],
 
