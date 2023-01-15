@@ -18,6 +18,16 @@ async function getMultiple(page = 1){
   return writers
 }
 
+async function saveDraft(writerId, body) {
+  const writers = await Writer.updateOne({
+    _id: writerId
+  },
+  {
+    $push: {"drafts": body}
+  }
+  )
+}
+
 async function getSingleByAuthId(id) {
     const writer = await Writer.findOne({auth0Id: id})
     return writer
@@ -43,5 +53,6 @@ module.exports = {
   create,
   update,
   remove,
-  getSingleByAuthId
+  getSingleByAuthId,
+  saveDraft
 }

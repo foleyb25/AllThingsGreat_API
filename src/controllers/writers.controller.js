@@ -174,8 +174,16 @@ async function update(req,res) {
     return res.status(200).json({message: "Writer Updated Successfully"})
 }
 
+async function saveDraft(req, res) {
+    const draftData = req.body
+    const writerId = req.params.id
+    await writerService.saveDraft(writerId, draftData)
+    return res.status(200).json({message: "Draft Saved Successfully"})
+}
+
 module.exports = autoCatch({
     create,
     update,
-    getUserByAuthID
+    getUserByAuthID,
+    saveDraft
 })

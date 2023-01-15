@@ -52,6 +52,28 @@ const writerSchema = mongoose.Schema({
         default: false,
     },
 
+    drafts: [{
+        title: {
+            type: 'string',
+            defaults: ''
+        },
+        bodyHTML: {
+            type: 'string',
+            defaults: ''
+        },
+        imageUrl: {
+            type: 'string',
+            defaults: ''
+        },
+        category: {
+            type: 'string',
+            defaults: ''
+        },
+        tags: [],
+        title: [],
+
+    }],
+
     createdAt: { 
         type: 'number',
         default: Date.now()
