@@ -19,6 +19,10 @@ async function getMultiple(page = 1){
   return articles
 }
 
+async function getArticlesByUserId(userId) {
+    return await Article.find( {"writer": userId})
+}
+
 async function getSingle(id) {
     const article = await Article.findById(id)
         .populate("writer");
@@ -45,5 +49,6 @@ module.exports = {
   getSingle,
   create,
   update,
-  remove
+  remove,
+  getArticlesByUserId
 }

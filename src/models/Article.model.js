@@ -59,6 +59,10 @@ const articleSchema = mongoose.Schema({
         
     },
 
+    tags: [],
+
+    moods: [],
+
     createdAt: { 
         type: 'number',
         default: Date.now()

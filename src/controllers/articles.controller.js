@@ -63,12 +63,8 @@ async function getBucketUrls(req,res) {
  */
 async function create(req,res) {
     const article = req.body
-    promisify(articleService.create(article)).then( (data) => {
-        return res.send(200)
-    }).catch( (err) => {
-
-    })
-    
+    const response = await articleService.create(article)
+    return res.status(200).json(response)
 }
 
 // /api/v2/articles/
@@ -78,16 +74,24 @@ async function getAll(req,res) {
 
 // /api/v2/articles/:id
 async function getArticleById(req,res) {
+    const articleId = req.params.id
+    const response = await articleService.getSingle(articleId)
+    return res.status(200).json(response)
 
 }
 
 // /api/v2/articles/user/:id
 async function getArticlesByUserId(req,res) {
+    const userId = req.params.id
+    const response = await articleService.getArticlesByUserId(userId)
+    return res.status(200).json(response)
 
 }
 
 module.exports = autoCatch({
     uploadArticleImage,
     getBucketUrls,
-    create
+    create,
+    getArticlesByUserId,
+    getArticleById
 })
