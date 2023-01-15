@@ -55,13 +55,7 @@ const writerSchema = mongoose.Schema({
     createdAt: { 
         type: 'number',
         default: Date.now()
-        },
-
-   updatedAt: { 
-        type: 'number',
-        default: Date.now()
-   },
-
+    },
 },
 {
     versionKey: false // Version key is a Mongoose integration which saves version number to the DB 
