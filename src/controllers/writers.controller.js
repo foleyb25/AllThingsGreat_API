@@ -101,7 +101,7 @@ async function getUserByAuthID(req,res) {
 async function create(req,res) {
     const writer = req.body;
     const status = await writerService.create(writer)
-    return res.status(201).json({message: "Writer created successfully!"})
+    return res.status(201).json({message: "Writer created successfully!", _id: status._doc._id})
 }
 
 /**

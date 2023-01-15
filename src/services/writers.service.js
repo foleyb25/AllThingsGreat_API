@@ -19,7 +19,7 @@ async function getMultiple(page = 1){
 }
 
 async function getSingleByAuthId(id) {
-    const writer = await Writer.findOne({auth0_id: id})
+    const writer = await Writer.findOne({auth0Id: id})
     return writer
 }
 
@@ -29,7 +29,7 @@ async function create(writer){
 }
 
 async function update(id, newWriter){
-    const result = await Writer.findOneAndUpdate({auth0_id: id}, newWriter);
+    const result = await Writer.findOneAndUpdate({auth0Id: id}, newWriter);
     return result
 }
 
