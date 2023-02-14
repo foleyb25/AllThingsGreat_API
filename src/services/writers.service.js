@@ -19,13 +19,14 @@ async function getMultiple(page = 1){
 }
 
 async function saveDraft(writerId, body) {
-  const writers = await Writer.updateOne({
+  const writer = await Writer.updateOne({
     _id: writerId
   },
   {
     $push: {"drafts": body}
   }
   )
+  return body
 }
 
 async function getSingleByAuthId(id) {
