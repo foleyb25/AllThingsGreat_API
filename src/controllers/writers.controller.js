@@ -10,6 +10,8 @@ const autoCatch = require("../lib/auto_catch.lib")
 const AppError = require("../lib/app_error.lib");
 const { ERROR_400, ERROR_500, OK_CREATED } = require('../lib/constants.lib');
 const writerService = require("../services/writers.service.js")
+const he = require('he')
+const sanitizeHtml = require('sanitize-html')
 
 /**
  * @swagger
@@ -175,7 +177,8 @@ async function update(req,res) {
 }
 
 async function saveDraft(req, res) {
-    const draftData = req.body
+    var draftData = req.body
+    draftData.bodyHTML = sanitizeHtml(he.decode(draftData.bodyHTML))
     const writerId = req.params.id
     draft = await writerService.saveDraft(writerId, draftData)
     return res.status(200).json({draft: draft, message: "Draft Saved Successfully"})

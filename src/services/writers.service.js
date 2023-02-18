@@ -19,13 +19,15 @@ async function getMultiple(page = 1){
 }
 
 async function saveDraft(writerId, body) {
-  const writer = await Writer.updateOne({
+  const writer = await Writer.findOneAndUpdate({
     _id: writerId
   },
   {
     $push: {"drafts": body}
-  }
+  },
   )
+  //get id of most recent draft created
+  body._id = writer.drafts[writer.drafts.length - 1]._id
   return body
 }
 
