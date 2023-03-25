@@ -9,7 +9,7 @@ const Article = require("../controllers/articles.controller");
 const {jwtCheck} = require("../lib/auth.lib")
 const {upload} = require("../lib/multer.lib")
 
-router.get(`/user/:id`, Article.getArticlesByUserId);
+router.get(`/user/:id`, Article.getArticlesByWriterId);
 router.post(`/create`, jwtCheck, Article.create);
 router.patch(`/update/:id`, jwtCheck, Article.update);
 router.post(`/uploadImage`, [jwtCheck, upload.single("file")] , Article.uploadArticleImage)

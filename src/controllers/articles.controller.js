@@ -63,9 +63,9 @@ async function getArticleById(req,res) {
 }
 
 // /api/v2/articles/user/:id
-async function getArticlesByUserId(req,res) {
+async function getArticlesByWriterId(req,res) {
     const userId = req.params.id
-    const response = await articleService.getArticlesByUserId(userId)
+    const response = await articleService.getArticlesByWriterId(userId)
     return res.status(200).json(response)
 }
 
@@ -74,6 +74,6 @@ module.exports = autoCatch({
     getBucketUrls,
     create,
     update,
-    getArticlesByUserId,
+    getArticlesByWriterId,
     getArticleById
 })
