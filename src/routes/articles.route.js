@@ -15,6 +15,6 @@ router.get(`/user/:id`, Article.getArticlesByUserId);
 router.post(`/create`, jwtCheck, Article.create);
 router.patch(`/update/:id`, jwtCheck, Article.update);
 router.post(`/uploadImage`, [jwtCheck, upload.single("file")] , Article.uploadArticleImage)
-router.get(`/getImageUrls/:id`, jwtCheck, Article.getBucketUrls)
+router.get(`/getImageUrls`, jwtCheck, Article.getBucketUrls)
 
 module.exports = router;
