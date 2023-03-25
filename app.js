@@ -12,8 +12,6 @@ const rateLimit = require('express-rate-limit');
 const AppError = require('./src/lib/app_error.lib');
 const globalErrorHandler = require('./src/controllers/error.controller');
 const { ERROR_404 } = require('./src/lib/constants.lib');
-const swaggerUI = require('swagger-ui-express');
-const swaggerJsDoc = require('swagger-jsdoc')
 const {API_V2} = require("./src/lib/constants.lib")
 
 const app = express();
@@ -81,43 +79,8 @@ app.use(`${API_V2}/screenplays`, require("./src/routes/screenplays.route"));
 // app.use(``, require("./src/routes/watchservices.route"));
 app.use(`${API_V2}/writers`, require("./src/routes/writers.route"));
 
-const swaggerOptions = {
-  swaggerDefinition: {
-    openapi: '3.0.0',
-    info: {
-      title: "All Things Great API",
-      version: "1.0.0",
-    },
-    servers: [
-      {
-        url: "https://atgapi.fly.dev"
-      },
-      {
-        url: "http://localhost:8080"
-      },
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        }
-      }
-    },
-    security: [{
-      bearerAuth: []
-    }]
-  },
-  host: "https://atgapi.fly.dev",
-  apis: ["./src/controllers/*.controller.js"]
-}
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions)
-
 if (process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev')); //using the morgan logging middleware for development
-    app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
   }
   if (process.env.NODE_ENV !== 'test') {
     const { createLogger } = require('./src/lib/logger.lib');

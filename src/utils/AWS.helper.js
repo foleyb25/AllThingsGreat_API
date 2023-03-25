@@ -30,7 +30,7 @@ async function uploadFile(file) {
     })
 }
 
-async function getImageUrls(id) {
+async function getImageUrls() {
 
     return new Promise((resolve, reject) => {    
         try {

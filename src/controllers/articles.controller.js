@@ -24,8 +24,8 @@ async function uploadArticleImage(req,res) {
 }
 
 async function getBucketUrls(req,res) {
-    const id = req.params.id
-    getImageUrls(id)
+
+    getImageUrls()
     .then( (imageUrls) => {
         return res.status(200).json(imageUrls)
     }).catch( (err) => {
