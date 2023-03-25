@@ -11,6 +11,8 @@ const AppError = require("../lib/app_error.lib");
 const { ERROR_400, ERROR_500, OK_CREATED } = require('../lib/constants.lib');
 const articleService = require("../services/articles.service.js")
 const {uploadFile, getImageUrls} = require("../utils/AWS.helper")
+const he = require('he')
+const sanitizeHtml = require('sanitize-html')
 
 async function uploadArticleImage(req,res) {
     const file = req.file
@@ -21,24 +23,6 @@ async function uploadArticleImage(req,res) {
     })
 }
 
-/**
- * @swagger
- * /api/v2/articles/getImageUrls/{id}/:
- *  get:
- *      summary: Get Screenplays with pagination
- *      description: Get Screenplays based on page number and query
- *      parameters:
- *        - in: path
- *          name: id
- *          required: true
- *          description: id of user
- *          schema:
- *            type: string
- *      responses:
- *          200:
- *              description: OK
- * 
- */
 async function getBucketUrls(req,res) {
     const id = req.params.id
     getImageUrls(id)
@@ -50,21 +34,19 @@ async function getBucketUrls(req,res) {
     
 }
 
-/**
- * @swagger
- * /api/v2/articles/create:
- *  post:
- *      summary: create a new article
- *      description: create a new article by recieving body data
- *      responses:
- *          200:
- *              description: OK
- * 
- */
 async function create(req,res) {
     const article = req.body
+    article.bodyHTML = sanitizeHtml(he.decode(article.bodyHTML))
     const response = await articleService.create(article)
     return res.status(200).json(response)
+}
+
+async function update(req,res) {
+    const article = req.body
+    const id = req.params.id
+    article.bodyHTML = sanitizeHtml(he.decode(article.bodyHTML))
+    const response = await articleService.update(id, article)
+    return res.status(204).json(response)
 }
 
 // /api/v2/articles/
@@ -85,13 +67,13 @@ async function getArticlesByUserId(req,res) {
     const userId = req.params.id
     const response = await articleService.getArticlesByUserId(userId)
     return res.status(200).json(response)
-
 }
 
 module.exports = autoCatch({
     uploadArticleImage,
     getBucketUrls,
     create,
+    update,
     getArticlesByUserId,
     getArticleById
 })
