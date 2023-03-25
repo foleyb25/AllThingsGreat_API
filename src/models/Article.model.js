@@ -63,6 +63,11 @@ const articleSchema = mongoose.Schema({
 
     moods: [],
 
+    isPinned: {
+        type: 'boolean',
+        default: false,
+    },
+
     createdAt: { 
         type: 'number',
         default: Date.now()

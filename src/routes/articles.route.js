@@ -17,4 +17,6 @@ router.get(`/getImageUrls`, jwtCheck, Article.getBucketUrls);
 router.get('/test', Article.getArticleById)
 router.get(`/:id`, Article.getArticleById); //keep this route at the bottom...trust me
 
+
+
 module.exports = router;
