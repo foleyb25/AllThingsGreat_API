@@ -59,9 +59,9 @@ app.use(cookieParser()); //middleware parses cookie data
 //Data Sanitization against NoSQL query injection
 app.use(mongoSanitize()); //package: express-mongo-sanitize
 //Data Sanitization against Xss attacks
-app.use(xss()); //package: xss-clean
+// app.use(xss()); //package: xss-clean
 //Prevent parameter pollution
-app.use(hpp({ whitelist: [] })); //package: hpp
+// app.use(hpp({ whitelist: [] })); //package: hpp
 //adding request time to the payload
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();

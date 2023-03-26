@@ -36,7 +36,7 @@ async function getBucketUrls(req,res) {
 
 async function create(req,res) {
     const article = req.body
-    article.bodyHTML = sanitizeHtml(he.decode(article.bodyHTML))
+    // article.bodyHTML = sanitizeHtml(he.decode(article.bodyHTML))
     const response = await articleService.create(article)
     return res.status(200).json(response)
 }
@@ -44,7 +44,7 @@ async function create(req,res) {
 async function update(req,res) {
     const article = req.body
     const id = req.params.id
-    article.bodyHTML = sanitizeHtml(he.decode(article.bodyHTML))
+    // article.bodyHTML = sanitizeHtml(he.decode(article.bodyHTML))
     const response = await articleService.update(id, article)
     return res.status(204).json(response)
 }
