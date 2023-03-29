@@ -62,12 +62,44 @@ async function getArticleById(req,res) {
 
 }
 
-// /api/v2/articles/user/:id
+// /api/v2/articles/writer/:id
 async function getArticlesByWriterId(req,res) {
     const userId = req.params.id
     const response = await articleService.getArticlesByWriterId(userId)
     return res.status(200).json(response)
 }
+
+// /api/v2/articles/writer
+async function getAllArticles(req,res) {
+    const response = await articleService.getAllArticles()
+    return res.status(200).json(response)
+}
+
+async function approveArticle(req,res) {
+    const articleId = req.params.id
+    const response = await articleService.approveArticle(articleId)
+    return res.status(200).json(response)
+}
+
+async function unApproveArticle(req,res) {
+    const articleId = req.params.id
+    const response = await articleService.unApproveArticle(articleId)
+    return res.status(200).json(response)
+}
+
+async function archiveArticle(req,res) {
+    const articleId = req.params.id
+    const response = await articleService.archiveArticle(articleId)
+    return res.status(200).json(response)
+}
+
+async function unArchiveArticle(req,res) {
+    const articleId = req.params.id
+    const response = await articleService.unArchiveArticle(articleId)
+    return res.status(200).json(response)
+}
+
+
 
 module.exports = autoCatch({
     uploadArticleImage,
@@ -75,5 +107,10 @@ module.exports = autoCatch({
     create,
     update,
     getArticlesByWriterId,
-    getArticleById
+    getAllArticles,
+    getArticleById,
+    approveArticle,
+    unApproveArticle,
+    archiveArticle,
+    unArchiveArticle
 })

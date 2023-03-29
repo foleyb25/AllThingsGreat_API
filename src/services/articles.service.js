@@ -23,6 +23,10 @@ async function getArticlesByWriterId(userId) {
     return await Article.find( {"writer": userId}).populate("writer")
 }
 
+async function getAllArticles() {
+    return await Article.find().populate("writer").limit(25);
+}
+
 async function getSingle(id) {
     const article = await Article.findById(id)
         .populate("writer");
@@ -44,11 +48,36 @@ async function remove(id){
     return result
 }
 
+async function approveArticle(id) {
+    const result = await Article.findByIdAndUpdate(id, {isReviewed: true})
+    return result
+}
+
+async function unApproveArticle(id) {
+    const result = await Article.findByIdAndUpdate(id, {isReviewed: false})
+    return result
+}
+
+async function archiveArticle(id) {
+    const result = await Article.findByIdAndUpdate(id, {isArchived: true})
+    return result
+}
+
+async function unArchiveArticle(id) {
+    const result = await Article.findByIdAndUpdate(id, {isArchived: false})
+    return result
+}
+
 module.exports = {
-  getMultiple,
-  getSingle,
-  create,
-  update,
-  remove,
-  getArticlesByWriterId
+    getMultiple,
+    getSingle,
+    create,
+    update,
+    remove,
+    getArticlesByWriterId,
+    getAllArticles,
+    approveArticle,
+    unApproveArticle,
+    archiveArticle,
+    unArchiveArticle
 }

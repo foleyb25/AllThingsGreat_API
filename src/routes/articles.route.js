@@ -9,12 +9,18 @@ const Article = require("../controllers/articles.controller");
 const {jwtCheck} = require("../lib/auth.lib")
 const {upload} = require("../lib/multer.lib")
 
-router.get(`/user/:id`, Article.getArticlesByWriterId);
+
+router.get(`/writer`, Article.getAllArticles);
+router.get(`/writer/:id`, Article.getArticlesByWriterId);
 router.post(`/create`, jwtCheck, Article.create);
 router.patch(`/update/:id`, jwtCheck, Article.update);
 router.post(`/uploadImage`, [jwtCheck, upload.single("file")] , Article.uploadArticleImage)
 router.get(`/getImageUrls`, jwtCheck, Article.getBucketUrls);
 router.get('/test', Article.getArticleById)
+router.patch('/:id/approve', jwtCheck, Article.approveArticle)
+router.patch('/:id/unapprove', jwtCheck, Article.unApproveArticle)
+router.patch('/:id/archive', jwtCheck, Article.archiveArticle)
+router.patch('/:id/unarchive', jwtCheck, Article.unArchiveArticle)
 router.get(`/:id`, Article.getArticleById); //keep this route at the bottom...trust me
 
 
