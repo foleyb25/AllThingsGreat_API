@@ -20,11 +20,11 @@ async function getMultiple(page = 1){
 }
 
 async function getArticlesByWriterId(userId) {
-    return await Article.find( {"writer": userId}).populate("writer")
+    return await Article.find( {"writer": userId}).populate("writer").sort( {createdAt: -1})
 }
 
 async function getAllArticles() {
-    return await Article.find().populate("writer").limit(25);
+    return await Article.find().populate("writer").limit(25).sort( {createdAt: -1});
 }
 
 async function getSingle(id) {
