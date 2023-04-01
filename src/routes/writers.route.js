@@ -12,6 +12,7 @@ router.get(`/authID/:authID`, jwtCheck, Writer.getUserByAuthID);
 router.post(``, jwtCheck, Writer.create);
 router.patch(``, jwtCheck, Writer.update);
 router.patch('/:id/draft', jwtCheck, Writer.saveDraft)
+router.delete('/:writerId/draft/:draftId', jwtCheck, Writer.deleteDraft)
 
 
 

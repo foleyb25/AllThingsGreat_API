@@ -10,7 +10,6 @@ const autoCatch = require("../lib/auto_catch.lib")
 const AppError = require("../lib/app_error.lib");
 const { ERROR_400, ERROR_500, OK_CREATED } = require('../lib/constants.lib');
 const writerService = require("../services/writers.service.js")
-const he = require('he')
 const sanitizeHtml = require('sanitize-html')
 
 async function getUserByAuthID(req,res) {
@@ -33,16 +32,25 @@ async function update(req,res) {
 }
 
 async function saveDraft(req, res) {
-    var draftData = req.body
-    draftData.bodyHTML = sanitizeHtml(he.decode(draftData.bodyHTML))
+    const draftData = req.body
+    // draftData.bodyHTML = sanitizeHtml(he.decode(draftData.bodyHTML))
     const writerId = req.params.id
-    draft = await writerService.saveDraft(writerId, draftData)
+    const draft = await writerService.saveDraft(writerId, draftData)
     return res.status(200).json({draft: draft, message: "Draft Saved Successfully"})
+}
+
+async function deleteDraft(req, res) {
+    const draftId = req.params.draftId
+    const writerId = req.params.writerId
+    // draftData.bodyHTML = sanitizeHtml(he.decode(draftData.bodyHTML))
+    const draft = await writerService.deleteDraft(writerId, draftId)
+    return res.status(200).json({draftId: draft, message: `Draft with id ${draftId} successfully deleted`})
 }
 
 module.exports = autoCatch({
     create,
     update,
     getUserByAuthID,
-    saveDraft
+    saveDraft,
+    deleteDraft,
 })

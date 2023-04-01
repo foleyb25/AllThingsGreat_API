@@ -31,6 +31,11 @@ async function saveDraft(writerId, body) {
   return body
 }
 
+async function deleteDraft(writerId, draftId) {
+  await Writer.updateOne({
+    _id: writerId}, {$pull: {"drafts": {_id: draftId}}})
+}
+
 async function getSingleByAuthId(id) {
     const writer = await Writer.findOne({auth0Id: id})
     return writer
@@ -57,5 +62,6 @@ module.exports = {
   update,
   remove,
   getSingleByAuthId,
-  saveDraft
+  saveDraft,
+  deleteDraft,
 }
