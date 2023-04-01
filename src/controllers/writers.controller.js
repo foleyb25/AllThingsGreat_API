@@ -26,7 +26,7 @@ async function create(req,res) {
 
 async function update(req,res) {
     const newWriter = req.body
-    const id = req.body.auth0_id
+    const id = req.body.auth0Id
     await writerService.update(id, newWriter)
     return res.status(200).json({message: "Writer Updated Successfully"})
 }

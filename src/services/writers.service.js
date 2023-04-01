@@ -25,7 +25,9 @@ async function saveDraft(writerId, body) {
   {
     $push: {"drafts": body}
   },
+  {new: true}
   )
+  // const updatedWriter = await Writer.findById(writer._id);
   //get id of most recent draft created
   body._id = writer.drafts[writer.drafts.length - 1]._id
   return body
@@ -47,7 +49,7 @@ async function create(writer){
 }
 
 async function update(id, newWriter){
-    const result = await Writer.findOneAndUpdate({auth0Id: id}, newWriter);
+    const result = await Writer.findOneAndUpdate({auth0Id: id}, newWriter, {new: true});
     return result
 }
 
