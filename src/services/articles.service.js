@@ -8,15 +8,10 @@ https://www.coreycleary.me/what-is-the-difference-between-controllers-and-servic
 */
 
 const Article = require("../models/Article.model")
-const fileUploader = require("../utils/AWS.helper")
-// const db = require('./db.service');
-// const helper = require('../utils/helper.util');
-// const config = require('../configs/general.config');
 
 async function getMultiple(page = 1){
 //   const offset = helper.getOffset(page, config.listPerPage);
-  const articles = await Article.find().limit(25);
-  return articles
+    return await Article.find().limit(25);
 }
 
 async function getArticlesByWriterId(userId) {
@@ -28,44 +23,35 @@ async function getAllArticles() {
 }
 
 async function getSingle(id) {
-    const article = await Article.findById(id)
-        .populate("writer");
-    return article
+    return await Article.findById(id).populate("writer");
 }
 
 async function create(article){
-    const result = await Article.create(article);
-    return result
+    return await Article.create(article);
 }
 
 async function update(id, newArticle){
-    const result = await Article.findByIdAndUpdate(id, newArticle);
-    return result
+    return await Article.findByIdAndUpdate(id, newArticle);
 }
 
 async function remove(id){
-    const result = await Article.findByIdAndDelete(id)
-    return result
+    return await Article.findByIdAndDelete(id)
 }
 
 async function approveArticle(id) {
-    const result = await Article.findByIdAndUpdate(id, {isReviewed: true})
-    return result
+    return await Article.findByIdAndUpdate(id, {isReviewed: true})
 }
 
 async function unApproveArticle(id) {
-    const result = await Article.findByIdAndUpdate(id, {isReviewed: false})
-    return result
+    return await Article.findByIdAndUpdate(id, {isReviewed: false})
 }
 
 async function archiveArticle(id) {
-    const result = await Article.findByIdAndUpdate(id, {isArchived: true})
-    return result
+    return await Article.findByIdAndUpdate(id, {isArchived: true})
 }
 
 async function unArchiveArticle(id) {
-    const result = await Article.findByIdAndUpdate(id, {isArchived: false})
-    return result
+    return await Article.findByIdAndUpdate(id, {isArchived: false})
 }
 
 module.exports = {

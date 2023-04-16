@@ -8,7 +8,7 @@ const router = express.Router();
 const Writer = require("../controllers/writers.controller");
 const {jwtCheck} = require("../lib/auth.lib")
 
-router.get(`/authID/:authID`, jwtCheck, Writer.getUserByAuthID);
+router.get(`/authID/:authID`, jwtCheck, Writer.getWriterByAuthID);
 router.post(``, jwtCheck, Writer.create);
 router.patch(``, jwtCheck, Writer.update);
 router.patch('/:id/draft', jwtCheck, Writer.saveDraft)

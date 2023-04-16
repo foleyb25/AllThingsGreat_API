@@ -18,6 +18,8 @@ async function uploadFile(file) {
                 Body: file.buffer,
                 Key: `${Date.now()}-${file.originalname}`
             }
+            // S3 ManagedUpload with callbacks are not supported in AWS SDK for JavaScript (v3).
+            // Please convert to `await client.upload(params, options).promise()`, and re-run aws-sdk-js-codemod.
             s3.upload(params, (err, data) => {
                 if(err) {
                     reject(err)
@@ -27,7 +29,7 @@ async function uploadFile(file) {
         } catch (err) {
             reject(err)
         }
-    })
+    });
 }
 
 async function getImageUrls() {

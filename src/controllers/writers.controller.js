@@ -12,45 +12,45 @@ const { ERROR_400, ERROR_500, OK_CREATED } = require('../lib/constants.lib');
 const writerService = require("../services/writers.service.js")
 const sanitizeHtml = require('sanitize-html')
 
-async function getUserByAuthID(req,res) {
+async function getWriterByAuthID(req,res) {
     const id = req.params.authID;
-    const data = await writerService.getSingleByAuthId(id);
-    return res.status(200).json(data);
+    const response = await writerService.getSingleByAuthId(id);
+    return res.status(200).json({data: response, message:"Successfully retrieved writer by auth0 id"});
 }
 
 async function create(req,res) {
     const writer = req.body;
-    const status = await writerService.create(writer)
-    return res.status(201).json({message: "Writer created successfully!", _id: status._doc._id})
+    const response = await writerService.create(writer)
+    return res.status(201).json({data: response, message:"Successfully createdWriter"})
 }
 
 async function update(req,res) {
     const newWriter = req.body
     const id = req.body.auth0Id
-    await writerService.update(id, newWriter)
-    return res.status(200).json({message: "Writer Updated Successfully"})
+    const response = await writerService.update(id, newWriter)
+    return res.status(200).json({data: response, message:"Successfully updated writer"})
 }
 
 async function saveDraft(req, res) {
     const draftData = req.body
     // draftData.bodyHTML = sanitizeHtml(he.decode(draftData.bodyHTML))
     const writerId = req.params.id
-    const draft = await writerService.saveDraft(writerId, draftData)
-    return res.status(200).json({draft: draft, message: "Draft Saved Successfully"})
+    const response = await writerService.saveDraft(writerId, draftData)
+    return res.status(200).json({data: response, message:"Successfully save draft"})
 }
 
 async function deleteDraft(req, res) {
     const draftId = req.params.draftId
     const writerId = req.params.writerId
     // draftData.bodyHTML = sanitizeHtml(he.decode(draftData.bodyHTML))
-    const draft = await writerService.deleteDraft(writerId, draftId)
-    return res.status(200).json({draftId: draft, message: `Draft with id ${draftId} successfully deleted`})
+    const response = await writerService.deleteDraft(writerId, draftId)
+    return res.status(200).json({data: response, message:"Successfully deleted draft"})
 }
 
 module.exports = autoCatch({
     create,
     update,
-    getUserByAuthID,
+    getWriterByAuthID,
     saveDraft,
     deleteDraft,
 })

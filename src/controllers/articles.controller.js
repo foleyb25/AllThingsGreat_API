@@ -16,49 +16,32 @@ const sanitizeHtml = require('sanitize-html')
 
 async function uploadArticleImage(req,res) {
     const file = req.file
-    uploadFile(file).then( (data) => {
-        return res.status(200).json({message: "Image Successfully Uploaded"})
-    }).catch( (err) => {
-        throw new AppError("Error uploading image ", err.message)
-    })
+    const response = await uploadFile(file)
+    return res.status(200).json({data: response, message: "Image Successfully Uploaded"})
 }
 
 async function getBucketUrls(req,res) {
-
-    getImageUrls()
-    .then( (imageUrls) => {
-        return res.status(200).json(imageUrls)
-    }).catch( (err) => {
-        throw new AppError("Error getting image urls ", err.message)
-    })
-    
+    const response = await getImageUrls()
+    return res.status(200).json({data: response, message: "Successfully retrieved bucket Urls"})    
 }
 
 async function create(req,res) {
     const article = req.body
-    // article.bodyHTML = sanitizeHtml(he.decode(article.bodyHTML))
     const response = await articleService.create(article)
-    return res.status(200).json(response)
+    return res.status(200).json({data: response, message: "Successfully created article"})
 }
 
 async function update(req,res) {
     const article = req.body
     const id = req.params.id
-    // article.bodyHTML = sanitizeHtml(he.decode(article.bodyHTML))
     const response = await articleService.update(id, article)
-    return res.status(204).json(response)
+    return res.status(204).json({data: response, message: "Successfully updated article"})
 }
 
-// /api/v2/articles/
-async function getAll(req,res) {
-
-}
-
-// /api/v2/articles/:id
 async function getArticleById(req,res) {
     const articleId = req.params.id
     const response = await articleService.getSingle(articleId)
-    return res.status(200).json(response)
+    return res.status(200).json({data: response, message: "Successfully retrieved article by id"})
 
 }
 
@@ -66,37 +49,37 @@ async function getArticleById(req,res) {
 async function getArticlesByWriterId(req,res) {
     const userId = req.params.id
     const response = await articleService.getArticlesByWriterId(userId)
-    return res.status(200).json(response)
+    return res.status(200).json({data: response, message: "Successfully retrieved writers articles"})
 }
 
 // /api/v2/articles/writer
 async function getAllArticles(req,res) {
     const response = await articleService.getAllArticles()
-    return res.status(200).json(response)
+    return res.status(200).json({data: response, message: "Successfully retrieved bucket all articles"})
 }
 
 async function approveArticle(req,res) {
     const articleId = req.params.id
     const response = await articleService.approveArticle(articleId)
-    return res.status(200).json(response)
+    return res.status(200).json({data: response, message: "Successfully approved article"})
 }
 
 async function unApproveArticle(req,res) {
     const articleId = req.params.id
     const response = await articleService.unApproveArticle(articleId)
-    return res.status(200).json(response)
+    return res.status(200).json({data: response, message: "Successfully un-approved article"})
 }
 
 async function archiveArticle(req,res) {
     const articleId = req.params.id
     const response = await articleService.archiveArticle(articleId)
-    return res.status(200).json(response)
+    return res.status(200).json({data: response, message: "Successfully archived article"})
 }
 
 async function unArchiveArticle(req,res) {
     const articleId = req.params.id
     const response = await articleService.unArchiveArticle(articleId)
-    return res.status(200).json(response)
+    return res.status(200).json({data: response, message: "Successfully un-archived article"})
 }
 
 

@@ -14,8 +14,7 @@ const Writer = require("../models/Writer.model")
 
 async function getMultiple(page = 1){
 //   const offset = helper.getOffset(page, config.listPerPage);
-  const writers = await Writer.find().limit(25);
-  return writers
+  return await Writer.find().limit(25);
 }
 
 async function saveDraft(writerId, body) {
@@ -34,28 +33,24 @@ async function saveDraft(writerId, body) {
 }
 
 async function deleteDraft(writerId, draftId) {
-  await Writer.updateOne({
+  return await Writer.updateOne({
     _id: writerId}, {$pull: {"drafts": {_id: draftId}}})
 }
 
 async function getSingleByAuthId(id) {
-    const writer = await Writer.findOne({auth0Id: id})
-    return writer
+    return await Writer.findOne({auth0Id: id})
 }
 
 async function create(writer){
-    const result = await Writer.create(writer);
-    return result
+    return await Writer.create(writer);
 }
 
 async function update(id, newWriter){
-    const result = await Writer.findOneAndUpdate({auth0Id: id}, newWriter, {new: true});
-    return result
+    return await Writer.findOneAndUpdate({auth0Id: id}, newWriter, {new: true});
 }
 
 async function remove(id){
-    const result = await Writer.findByIdAndDelete(id)
-    return result
+    return await Writer.findByIdAndDelete(id)
 }
 
 module.exports = {
