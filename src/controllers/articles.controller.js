@@ -15,13 +15,33 @@ const he = require('he')
 const sanitizeHtml = require('sanitize-html')
 
 async function uploadArticleImage(req,res) {
+    const writerId = req.params.writerId
     const file = req.file
-    const response = await uploadFile(file)
+    const bucket = `allthingsgreat/articles/${writerId}`
+    const response = await uploadFile(file, bucket)
+    return res.status(200).json({data: response, message: "Image Successfully Uploaded"})
+}
+
+async function uploadProfileImage(req,res) {
+    const writerId = req.params.writerId
+    const file = req.file
+    const bucket = `allthingsgreat/profile/${writerId}`
+    const response = await uploadFile(file, bucket)
     return res.status(200).json({data: response, message: "Image Successfully Uploaded"})
 }
 
 async function getBucketUrls(req,res) {
-    const response = await getImageUrls()
+    const bucket = 
+    `allthingsgreat`
+    const prefix = `articles/${req.params.writerId}/`
+    const response = await getImageUrls(bucket, prefix)
+    return res.status(200).json({data: response, message: "Successfully retrieved bucket Urls"})    
+}
+
+async function getProfileBucketUrls(req,res) {
+    const bucket = 'allthingsgreat'
+    const prefix = `profile/${req.params.writerId}/`
+    const response = await getImageUrls(bucket, prefix)
     return res.status(200).json({data: response, message: "Successfully retrieved bucket Urls"})    
 }
 
@@ -87,6 +107,8 @@ async function unArchiveArticle(req,res) {
 module.exports = autoCatch({
     uploadArticleImage,
     getBucketUrls,
+    getProfileBucketUrls,
+    uploadProfileImage,
     create,
     update,
     getArticlesByWriterId,

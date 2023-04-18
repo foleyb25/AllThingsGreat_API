@@ -8,12 +8,12 @@ const s3 = new AWS.S3({
 })
 
 
-async function uploadFile(file) {
+async function uploadFile(file, bucket) {
     return new Promise((resolve, reject) => {
         // perform file upload
         try {
             const params = {
-                Bucket: 'allthingsgreat/test',
+                Bucket: bucket,
                 ACL: 'public-read',
                 Body: file.buffer,
                 Key: `${Date.now()}-${file.originalname}`
@@ -32,13 +32,13 @@ async function uploadFile(file) {
     });
 }
 
-async function getImageUrls() {
+async function getImageUrls(bucket, prefix) {
 
     return new Promise((resolve, reject) => {    
         try {
             const params = {
-                Bucket: 'allthingsgreat',
-                Prefix: 'test',
+                Bucket: bucket,
+                Prefix: prefix,
                 MaxKeys: 10
             }
             s3.listObjects(params, async (err, data) => {
@@ -60,10 +60,10 @@ async function getImageUrls() {
     
                 var image_urls = []
     
-                await imageObjects.forEach(imageObject => {
+                for (const imageObject of imageObjects)  {
                     try {
                         s3.getSignedUrl('getObject', {
-                            Bucket: "allthingsgreat",
+                            Bucket: bucket,
                             Key: imageObject.Key,
                             Expires: 60
                         }, (err,url) => {
@@ -85,7 +85,7 @@ async function getImageUrls() {
                     }
                     
                     
-                })
+                }
                 
                 resolve(image_urls)
                 

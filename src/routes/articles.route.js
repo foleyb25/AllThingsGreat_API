@@ -14,8 +14,10 @@ router.get(`/writer`, Article.getAllArticles);
 router.get(`/writer/:id`, Article.getArticlesByWriterId);
 router.post(`/create`, jwtCheck, Article.create);
 router.patch(`/update/:id`, jwtCheck, Article.update);
-router.post(`/uploadImage`, [jwtCheck, upload.single("file")] , Article.uploadArticleImage)
-router.get(`/getImageUrls`, jwtCheck, Article.getBucketUrls);
+router.post(`/uploadImage/writer/:writerId`, [jwtCheck, upload.single("file")] , Article.uploadArticleImage)
+router.get(`/getImageUrls/writer/:writerId`, jwtCheck, Article.getBucketUrls);
+router.post(`/uploadProfileImage/writer/:writerId`, [jwtCheck, upload.single("file")] , Article.uploadProfileImage)
+router.get(`/getProfileImageUrls/writer/:writerId`, jwtCheck, Article.getBucketUrls);
 router.get('/test', Article.getArticleById)
 router.patch('/:id/approve', jwtCheck, Article.approveArticle)
 router.patch('/:id/unapprove', jwtCheck, Article.unApproveArticle)
