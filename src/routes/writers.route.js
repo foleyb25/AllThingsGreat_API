@@ -11,6 +11,7 @@ const {jwtCheck} = require("../lib/auth.lib")
 router.get(`/authID/:authID`, jwtCheck, Writer.getWriterByAuthID);
 router.post(``, jwtCheck, Writer.create);
 router.patch(``, jwtCheck, Writer.update);
+router.get(`/getProfileImageUrls/:writerId`, jwtCheck, Writer.getProfileBucketUrls);
 router.patch('/:id/draft', jwtCheck, Writer.saveDraft)
 router.delete('/:writerId/draft/:draftId', jwtCheck, Writer.deleteDraft)
 

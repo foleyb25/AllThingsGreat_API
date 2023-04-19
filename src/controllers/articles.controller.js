@@ -38,13 +38,6 @@ async function getBucketUrls(req,res) {
     return res.status(200).json({data: response, message: "Successfully retrieved bucket Urls"})    
 }
 
-async function getProfileBucketUrls(req,res) {
-    const bucket = 'allthingsgreat'
-    const prefix = `profile/${req.params.writerId}/`
-    const response = await getImageUrls(bucket, prefix)
-    return res.status(200).json({data: response, message: "Successfully retrieved bucket Urls"})    
-}
-
 async function create(req,res) {
     const article = req.body
     const response = await articleService.create(article)
@@ -107,7 +100,6 @@ async function unArchiveArticle(req,res) {
 module.exports = autoCatch({
     uploadArticleImage,
     getBucketUrls,
-    getProfileBucketUrls,
     uploadProfileImage,
     create,
     update,

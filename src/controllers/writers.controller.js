@@ -10,6 +10,7 @@ const autoCatch = require("../lib/auto_catch.lib")
 const AppError = require("../lib/app_error.lib");
 const { ERROR_400, ERROR_500, OK_CREATED } = require('../lib/constants.lib');
 const writerService = require("../services/writers.service.js")
+const {getImageUrls} = require("../utils/AWS.helper")
 const sanitizeHtml = require('sanitize-html')
 
 async function getWriterByAuthID(req,res) {
@@ -47,10 +48,18 @@ async function deleteDraft(req, res) {
     return res.status(200).json({data: response, message:"Successfully deleted draft"})
 }
 
+async function getProfileBucketUrls(req,res) {
+    const bucket = 'allthingsgreat'
+    const prefix = `profile/${req.params.writerId}/`
+    const response = await getImageUrls(bucket, prefix)
+    return res.status(200).json({data: response, message: "Successfully retrieved bucket Urls"})    
+}
+
 module.exports = autoCatch({
     create,
     update,
     getWriterByAuthID,
     saveDraft,
     deleteDraft,
+    getProfileBucketUrls
 })
