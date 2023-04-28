@@ -100,7 +100,7 @@ async function evaluateArticle(req,res) {
     const articleHTML = req.body.articleHTML
     openai.apiKey = process.env.OPENAI_API_KEY;
     const response = await openai.ChatCompletion.create({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
         messages: [
             { role: 'system', content: `
             You are a helpful blog writing assistant for a company called AllThingsGreat where smut blogs and satire are highly encouraged.

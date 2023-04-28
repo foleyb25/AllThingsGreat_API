@@ -12,6 +12,7 @@ const { ERROR_400, ERROR_500, OK_CREATED } = require('../lib/constants.lib');
 const writerService = require("../services/writers.service.js")
 const {getImageUrls} = require("../utils/AWS.helper")
 const sanitizeHtml = require('sanitize-html')
+const openai = require('openai')
 
 async function getWriterByAuthID(req,res) {
     const id = req.params.authID;
@@ -55,11 +56,40 @@ async function getProfileBucketUrls(req,res) {
     return res.status(200).json({data: response, message: "Successfully retrieved bucket Urls"})    
 }
 
+//generates Tweets and Reddit Posts
+async function generateSuggestions(req,res) {
+    //step 1 get users last 5 blog titles
+        //need userId
+        //call getArticles sort by created asc time
+    const writerId = req.body.writerId
+    //step 2
+        //with the articles call OpenAI to generate Reddit and TWitter search keywords with
+        //openAI Prompt
+    openai.apiKey = process.env.OPENAI_API_KEY;
+    const response = await openai.ChatCompletion.create({
+        model: 'gpt-4',
+        messages: [
+            { role: 'system', content: `
+           
+            ` },
+            { role: 'user', content: `${data}` },
+        ],
+    });
+    //step 3
+        //Now that we have the search keywords search for 20 reddit posts and 20 Tweets
+        //utilizing Twitter API and Reddit API
+        // make sure data doesn't include media?? make sure data is in HTML/Blockquote
+    //step 4 
+        //return all of this data in JSON
+    return res.status(200).json({data: response, message: "Successfully un-archived article"})
+}
+
 module.exports = autoCatch({
     create,
     update,
     getWriterByAuthID,
     saveDraft,
     deleteDraft,
-    getProfileBucketUrls
+    getProfileBucketUrls,
+    generateSuggestions
 })
