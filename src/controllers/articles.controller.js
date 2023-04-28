@@ -13,6 +13,7 @@ const articleService = require("../services/articles.service.js")
 const {uploadFile, getImageUrls} = require("../utils/AWS.helper")
 const he = require('he')
 const sanitizeHtml = require('sanitize-html')
+const openai = require('openai');
 
 async function uploadArticleImage(req,res) {
     const writerId = req.params.writerId
@@ -95,6 +96,60 @@ async function unArchiveArticle(req,res) {
     return res.status(200).json({data: response, message: "Successfully un-archived article"})
 }
 
+async function evaluateArticle(req,res) {
+    const articleHTML = req.body.articleHTML
+    openai.apiKey = process.env.OPENAI_API_KEY;
+    const response = await openai.ChatCompletion.create({
+        model: 'gpt-3.5-turbo',
+        messages: [
+            { role: 'system', content: `
+            You are a helpful blog writing assistant for a company called AllThingsGreat where smut blogs and satire are highly encouraged.
+
+            You will review blog input given by the user in the form of HTML and give a score on the following items: structure out of 5, organization out of 5, content out of 5, SEO optimization out of 5, and a smut rating out of 10. Scores will be given to the nearest decimal.
+
+            You will also provide tips on grammatical errors or fixing sentence wording and you will provide as many as you see fit. If you see nothing significant don't worry about providing suggestions.
+
+            You will also provide at least 5 descriptive tags about the blog.
+
+            Lastly you will provide improvement tips for each category and output your response in json. As an example:
+
+            {
+            structure: 3.2,
+            organization: 4.0,
+            content: 3.5,
+            seo: 4.9,
+            smut: 7.4,
+            tags: ["tag1", "tag2", "tagN"...]
+            fixes : {
+                sentence1: {
+                    original: “referenced sentence”,
+                    new: “suggested change”
+                },
+                sentence2: {
+                    original: “referenced sentence”,
+                    new: “suggested change”
+                },
+                sentenceN: {
+                    original: “referenced sentence”,
+                    new: “suggested change”
+                },
+                }
+            structure_tip: “multi line message”,
+            organization_tip: “multi line message”,
+            content_tip: “multi line message”,
+            seo_tip: “multi line message”,
+            smut_tip: “multi line message”
+            }
+
+            Remember smut is better.
+            ` },
+            { role: 'user', content: `${articleHTML}` },
+        ],
+    });
+
+    return res.status(200).json({data: response, message: "Successfully un-archived article"})
+}
+
 
 
 module.exports = autoCatch({
@@ -109,5 +164,6 @@ module.exports = autoCatch({
     approveArticle,
     unApproveArticle,
     archiveArticle,
-    unArchiveArticle
+    unArchiveArticle,
+    evaluateArticle
 })

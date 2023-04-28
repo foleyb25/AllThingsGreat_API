@@ -18,6 +18,7 @@ router.post(`/uploadImage/writer/:writerId`, [jwtCheck, upload.single("file")] ,
 router.get(`/getImageUrls/writer/:writerId`, jwtCheck, Article.getBucketUrls);
 router.post(`/uploadProfileImage/writer/:writerId`, [jwtCheck, upload.single("file")] , Article.uploadProfileImage)
 router.get('/test', Article.getArticleById)
+router.post('/evaluate', jwtCheck, Article.evaluateArticle)
 router.patch('/:id/approve', jwtCheck, Article.approveArticle)
 router.patch('/:id/unapprove', jwtCheck, Article.unApproveArticle)
 router.patch('/:id/archive', jwtCheck, Article.archiveArticle)
