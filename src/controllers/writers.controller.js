@@ -70,9 +70,14 @@ async function generateSuggestions(req,res) {
         model: 'gpt-4',
         messages: [
             { role: 'system', content: `
-           
+            You are a helpful assistant that generates Twitter Search Keywords as well as 
+            Reddit keywords that will be used as parameters to look for content on Twitter and
+            Reddit using their respective APIs. You will generate these keywords by reading the
+            last 5 article titles the write wrote.
+
+            Provide detailed keywords that will successfully search these API
             ` },
-            { role: 'user', content: `${data}` },
+            { role: 'user', content: `${articleTitles}` },
         ],
     });
     //step 3
