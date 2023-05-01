@@ -83,8 +83,8 @@ if (process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev')); //using the morgan logging middleware for development
   }
   if (process.env.NODE_ENV !== 'test') {
-    const { createLogger } = require('./src/lib/logger.lib');
-    const logger = createLogger();
+    // const { createLogger } = require('./src/lib/logger.lib');
+    // const logger = createLogger();
     //log requests that results in http code >=400
     app.use(
       morgan(
@@ -103,13 +103,13 @@ if (process.env.NODE_ENV !== 'production') {
           skip: function (req, res) {
             return res.statusCode < 400;
           },
-          stream: {
-            // Configure Morgan to use our custom logger
-            write: (message) =>
-              logger.warn(`incoming-request`, {
-                requestPayload: JSON.parse(message),
-              }),
-          },
+          // stream: {
+          //   // Configure Morgan to use our custom logger
+          //   write: (message) =>
+          //     logger.warn(`incoming-request`, {
+          //       requestPayload: JSON.parse(message),
+          //     }),
+          // },
         }
       )
     );

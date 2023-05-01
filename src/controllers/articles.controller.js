@@ -13,7 +13,8 @@ const articleService = require("../services/articles.service.js")
 const {uploadFile, getImageUrls} = require("../utils/AWS.helper")
 const he = require('he')
 const sanitizeHtml = require('sanitize-html')
-const openai = require('openai');
+const {Configuration, OpenAIApi} = require('openai');
+const axios = require('axios')
 
 async function uploadArticleImage(req,res) {
     const writerId = req.params.writerId
@@ -97,9 +98,12 @@ async function unArchiveArticle(req,res) {
 }
 
 async function evaluateArticle(req,res) {
-    const articleHTML = req.body.articleHTML
-    openai.apiKey = process.env.OPENAI_API_KEY;
-    const response = await openai.ChatCompletion.create({
+    const articleHTML = req.body.articleHTML;
+    const configuration = new Configuration({
+        apiKey: process.env.OPENAI_API_KEY,
+    });
+    const openai = new OpenAIApi(configuration)
+    const response = await openai.createChatCompletion.create({
         model: 'gpt-4',
         messages: [
             { role: 'system', content: `
@@ -145,9 +149,11 @@ async function evaluateArticle(req,res) {
             ` },
             { role: 'user', content: `${articleHTML}` },
         ],
-    });
+      },
+    )
 
-    return res.status(200).json({data: response, message: "Successfully un-archived article"})
+
+    return res.status(200).json({ data: response.data, message: 'Successfully evaluated article' });
 }
 
 

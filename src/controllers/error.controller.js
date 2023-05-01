@@ -1,5 +1,5 @@
 const AppError = require('../lib/app_error.lib');
-const { createLogger } = require('../lib/logger.lib');
+// const { createLogger } = require('../lib/logger.lib');
 const { ERROR_400, ERROR_500 } = require('../lib/constants.lib');
 
 const handleCastErrorDB = (err) => {
@@ -38,8 +38,8 @@ module.exports = (err, req, res, next) => {
   err.status = err.status ?? 'error';
 
   if (process.env.NODE_ENV !== 'test') {
-    const logger = createLogger();
-    logger.error(err);
+    // const logger = createLogger();
+    // logger.error(err);
   }
 
   if (process.env.NODE_ENV === 'development') {
