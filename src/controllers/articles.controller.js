@@ -103,13 +103,15 @@ async function evaluateArticle(req,res) {
         apiKey: process.env.OPENAI_API_KEY,
     });
     const openai = new OpenAIApi(configuration)
-    const response = await openai.createChatCompletion.create({
-        model: 'gpt-4',
+    const response = await openai.createChatCompletion({
+        model: 'gpt-3.5-turbo',
         messages: [
             { role: 'system', content: `
             You are a helpful blog writing assistant for a company called AllThingsGreat where smut blogs and satire are highly encouraged.
 
-            You will review blog input given by the user in the form of HTML and give a score on the following items: structure out of 5, organization out of 5, content out of 5, SEO optimization out of 5, and a smut rating out of 10. Scores will be given to the nearest decimal.
+            You will review blog input given by the user and give a score on the following items: structure out of 5, organization out of 5, content out of 5, SEO optimization out of 5, and a smut rating out of 10. Scores will be given to the nearest decimal.
+
+            Smut can be considered sexual content, profanity, objectification, inappropriate innuendos, and age-inappropriate content.
 
             You will also provide tips on grammatical errors or fixing sentence wording and you will provide as many as you see fit. If you see nothing significant don't worry about providing suggestions.
 
@@ -125,19 +127,18 @@ async function evaluateArticle(req,res) {
             smut: 7.4,
             tags: ["tag1", "tag2", "tagN"...]
             fixes : {
-                sentence1: {
+                {
                     original: “referenced sentence”,
-                    new: “suggested change”
+                    suggestion: “suggested change”
                 },
-                sentence2: {
+                {
                     original: “referenced sentence”,
-                    new: “suggested change”
+                    suggestion: “suggested change”
                 },
-                sentenceN: {
                     original: “referenced sentence”,
-                    new: “suggested change”
-                },
+                    suggestion: “suggested change”
                 }
+            },
             structure_tip: “multi line message”,
             organization_tip: “multi line message”,
             content_tip: “multi line message”,
@@ -149,11 +150,15 @@ async function evaluateArticle(req,res) {
             ` },
             { role: 'user', content: `${articleHTML}` },
         ],
+        temperature: 0.1
       },
     )
 
+    var reply = response.data.choices[0].message.content
+    reply = reply.replace(/(\n|\\N)/g, '')
+    const jsonReply = JSON.parse(reply)
 
-    return res.status(200).json({ data: response.data, message: 'Successfully evaluated article' });
+    return res.status(200).json({ data: jsonReply, message: 'Successfully evaluated article' });
 }
 
 
