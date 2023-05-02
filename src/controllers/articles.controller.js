@@ -14,7 +14,9 @@ const {uploadFile, getImageUrls} = require("../utils/AWS.helper")
 const he = require('he')
 const sanitizeHtml = require('sanitize-html')
 const {Configuration, OpenAIApi} = require('openai');
-const axios = require('axios')
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+const cheerio = require('cheerio');
 
 async function uploadArticleImage(req,res) {
     const writerId = req.params.writerId
@@ -161,6 +163,61 @@ async function evaluateArticle(req,res) {
     return res.status(200).json({ data: jsonReply, message: 'Successfully evaluated article' });
 }
 
+async function analyzeMatchup(req,res) {
+    // Replace the URL with the actual URL of the webpage you're scraping
+    const url = 'https://www.teamrankings.com/nfl/stat/points-per-game';
+
+    puppeteer.use(StealthPlugin());
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36');
+    await page.goto(url);
+    await page.waitForSelector('table');
+
+    const content = await page.content();
+    const $ = cheerio.load(content);
+
+    const teams = ['Kansas City', 'Philadelphia'];
+    const teamData = {};
+
+    $('tr').each(function () {
+      const teamName = $(this).find('td').eq(1).text().trim();
+
+      if (teams.includes(teamName)) {
+        const data2022 = $(this).find('td').eq(2).text().trim();
+        teamData[teamName] = data2022;
+      }
+    });
+
+    console.log('Team Data:', teamData);
+    await browser.close();
+    // const configuration = new Configuration({
+    //     apiKey: process.env.OPENAI_API_KEY,
+    // });
+    // const openai = new OpenAIApi(configuration)
+
+    // const response = await openai.createChatCompletion({
+    //     model: 'gpt-3.5-turbo',
+    //     messages: [
+    //         { role: 'system', content: `
+    //         You are a helpful blog writing assistant for a company called AllThingsGreat where smut blogs and satire are highly encouraged.
+
+            
+    //         ` },
+    //         { role: 'user', content: `${articleHTML}` },
+    //     ],
+    //     temperature: 0.1
+    //   },
+    // )
+
+    // var reply = response.data.choices[0].message.content
+    // reply = reply.replace(/(\n|\\N)/g, '')
+    // const jsonReply = JSON.parse(reply)
+
+    return res.status(200).json({ data: response, message: 'Successfully evaluated article' });
+}
+
 
 
 module.exports = autoCatch({
@@ -176,5 +233,6 @@ module.exports = autoCatch({
     unApproveArticle,
     archiveArticle,
     unArchiveArticle,
-    evaluateArticle
+    evaluateArticle,
+    analyzeMatchup
 })
