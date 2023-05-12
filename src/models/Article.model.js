@@ -63,6 +63,11 @@ const articleSchema = mongoose.Schema({
 
     moods: [],
 
+    slug: {
+        type: 'string',
+        default: null,
+    },
+
     isPinned: {
         type: 'boolean',
         default: false,

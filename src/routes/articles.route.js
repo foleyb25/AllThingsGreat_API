@@ -10,6 +10,7 @@ const {jwtCheck} = require("../lib/auth.lib")
 const {upload} = require("../lib/multer.lib")
 
 
+router.get(`/`, Article.getAllArticles);
 router.get(`/writer`, Article.getAllArticles);
 router.get(`/writer/:id`, Article.getArticlesByWriterId);
 router.post(`/create`, jwtCheck, Article.create);
