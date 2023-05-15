@@ -26,6 +26,10 @@ async function getSingle(id) {
     return await Article.findById(id).populate("writer");
 }
 
+async function getSingleSlug(slug) {
+    return await Article.findOne({slug: slug}).populate("writer");
+}
+
 async function create(article){
     return await Article.create(article);
 }
@@ -65,5 +69,6 @@ module.exports = {
     approveArticle,
     unApproveArticle,
     archiveArticle,
-    unArchiveArticle
+    unArchiveArticle,
+    getSingleSlug
 }

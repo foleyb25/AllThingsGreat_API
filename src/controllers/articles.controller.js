@@ -70,7 +70,12 @@ async function getArticleById(req,res) {
     const articleId = req.params.id
     const response = await articleService.getSingle(articleId)
     return res.status(200).json({data: response, message: "Successfully retrieved article by id"})
+}
 
+async function getArticleBySlug(req,res) {
+    const slug = req.params.slug
+    const response = await articleService.getSingleSlug(slug)
+    return res.status(200).json({data: response, message: "Successfully retrieved article by slug"})
 }
 
 // /api/v2/articles/writer/:id
@@ -310,5 +315,6 @@ module.exports = autoCatch({
     archiveArticle,
     unArchiveArticle,
     evaluateArticle,
-    analyzeMatchup
+    analyzeMatchup,
+    getArticleBySlug
 })

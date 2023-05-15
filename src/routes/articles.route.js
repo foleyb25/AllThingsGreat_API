@@ -25,6 +25,7 @@ router.patch('/:id/approve', jwtCheck, Article.approveArticle)
 router.patch('/:id/unapprove', jwtCheck, Article.unApproveArticle)
 router.patch('/:id/archive', jwtCheck, Article.archiveArticle)
 router.patch('/:id/unarchive', jwtCheck, Article.unArchiveArticle)
+router.get(`/slug/:slug`, Article.getArticleBySlug);
 router.get(`/:id`, Article.getArticleById); //keep this route at the bottom...trust me
 
 
