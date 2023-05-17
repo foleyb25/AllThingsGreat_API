@@ -30,3 +30,12 @@ exports.ERROR_511 = 511; /* Network Authentication Required. */
 
 //app constants
 exports.API_V2 = '/api/v2';
+
+//article Categories
+exports.ATG = "AllThingsGreat";
+exports.CS = "Combat Sports";
+exports.CRYPTO = "Cryptocurrency";
+exports.AIT = "A.I. & Technology"
+exports.HEALTH = "Health & Fitness";
+exports.EXTRAORDINARY = "Extraordinary";
+exports.MATCHUP = "Matchup Analysis";

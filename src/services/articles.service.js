@@ -22,6 +22,11 @@ async function getAllArticles() {
     return await Article.find().populate("writer").limit(25).sort( {createdAt: -1});
 }
 
+async function getArticles(category, page) {
+    const filter = (category !== 'undefined') ? { category: category } : {}; 
+    return await Article.find(filter).populate("writer").skip(Number(page)).limit(25).sort( {createdAt: -1});
+}
+
 async function getSingle(id) {
     return await Article.findById(id).populate("writer");
 }
@@ -70,5 +75,6 @@ module.exports = {
     unApproveArticle,
     archiveArticle,
     unArchiveArticle,
-    getSingleSlug
+    getSingleSlug,
+    getArticles
 }

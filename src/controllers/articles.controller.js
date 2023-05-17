@@ -8,7 +8,15 @@ https://www.coreycleary.me/what-is-the-difference-between-controllers-and-servic
 
 const autoCatch = require("../lib/auto_catch.lib")
 const AppError = require("../lib/app_error.lib");
-const { ERROR_400, ERROR_500, OK_CREATED } = require('../lib/constants.lib');
+const { ERROR_400, ERROR_500, OK_CREATED,
+    ATG,
+    CS,
+    CRYPTO,
+    AIT,
+    HEALTH,
+    EXTRAORDINARY,
+    MATCHUP
+} = require('../lib/constants.lib');
 const articleService = require("../services/articles.service.js")
 const {uploadFile, getImageUrls} = require("../utils/AWS.helper")
 const he = require('he')
@@ -88,6 +96,39 @@ async function getArticlesByWriterId(req,res) {
 // /api/v2/articles/writer
 async function getAllArticles(req,res) {
     const response = await articleService.getAllArticles()
+    return res.status(200).json({data: response, message: "Successfully retrieved bucket all articles"})
+}
+
+// /api/v2/articles/writer
+async function getArticles(req,res) {
+    var category = req.params.category
+    switch (category) {
+        case "allthingsgreat":
+            category = ATG
+            break;
+        case "combatsports":
+            category = CS
+            break;
+        case "cryptocurrency":
+            category = CRYPTO
+            break;
+        case "ait":
+            category = AIT
+            break;
+        case "healthandfitness":
+            category = HEALTH
+            break;
+        case "extraordinary":
+            category = EXTRAORDINARY
+            break;
+        case "matchupanalysis":
+            category = MATCHUP
+            break;
+        default:
+            console.log("Could not find category")
+    }
+    const page = req.params.page
+    const response = await articleService.getArticles(category, page)
     return res.status(200).json({data: response, message: "Successfully retrieved bucket all articles"})
 }
 
@@ -309,6 +350,7 @@ module.exports = autoCatch({
     update,
     getArticlesByWriterId,
     getAllArticles,
+    getArticles,
     getArticleById,
     approveArticle,
     unApproveArticle,

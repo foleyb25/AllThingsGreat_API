@@ -82,6 +82,31 @@ const articleSchema = mongoose.Schema({
         type: 'number',
         default: Date.now()
     },
+
+    estimatedReadTime: {
+        type: 'number',
+        default: 0
+    },
+
+    contentRating: {
+        type: 'number',
+        default: 0
+    },
+
+    organizationRating: {
+        type: 'number',
+        default: 0
+    },
+
+    structureRating: {
+        type: 'number',
+        default: 0
+    },
+
+    smutRating: {
+        type: 'number',
+        default: 0
+    }
 },
 {
     versionKey: false, // Version key is a Mongoose integration which saves version number to the DB 
