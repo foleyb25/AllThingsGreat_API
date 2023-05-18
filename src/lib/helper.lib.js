@@ -10,8 +10,16 @@ const secondsToTimeString = (seconds) => {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   }
 
+const calculateEstimatedReadTime = (text) => {
+  var words = text.split(' ');
+  var numWords = words.length;
+  var readingTime = Math.round(numWords / 200);
+  return readingTime;
+}
+
 
 module.exports = {
     timeStringToSeconds,
-    secondsToTimeString
+    secondsToTimeString,
+    calculateEstimatedReadTime
 }

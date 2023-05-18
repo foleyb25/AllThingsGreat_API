@@ -88,24 +88,9 @@ const articleSchema = mongoose.Schema({
         default: 0
     },
 
-    contentRating: {
-        type: 'number',
-        default: 0
-    },
-
-    organizationRating: {
-        type: 'number',
-        default: 0
-    },
-
-    structureRating: {
-        type: 'number',
-        default: 0
-    },
-
-    smutRating: {
-        type: 'number',
-        default: 0
+    evaluation: {
+        type: 'Object',
+        default: {}
     }
 },
 {

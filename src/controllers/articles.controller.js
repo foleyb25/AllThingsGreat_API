@@ -20,13 +20,14 @@ const { ERROR_400, ERROR_500, OK_CREATED,
 const articleService = require("../services/articles.service.js")
 const {uploadFile, getImageUrls} = require("../utils/AWS.helper")
 const he = require('he')
-const sanitizeHtml = require('sanitize-html')
+const sanitizeHtml = require('sanitize-html');
 const {Configuration, OpenAIApi} = require('openai');
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const cheerio = require('cheerio');
-const {timeStringToSeconds, secondsToTimeString} = require('../lib/helper.lib')
+const {timeStringToSeconds, secondsToTimeString, calculateEstimatedReadTime} = require('../lib/helper.lib')
 const slugify = require('slugify')
+const { openai_evaluateArticle } = require('../lib/openai_api.lib')
 
 async function uploadArticleImage(req,res) {
     const writerId = req.params.writerId
@@ -53,7 +54,8 @@ async function getBucketUrls(req,res) {
 }
 
 async function create(req,res) {
-    var article = req.body
+    var article = req.body.article
+    var articleText = req.body.innerText
 
     let uniqueNumber = Math.floor(10000000 + Math.random() * 90000000)
     // Normalize the title by converting it to lowercase and replacing spaces with hyphens
@@ -63,13 +65,24 @@ async function create(req,res) {
         lower: true  // result in lower case
     })
     article.slug = `${slugTitle}-${uniqueNumber}`
+
+    const openai_response = await openai_evaluateArticle(articleText)
+    
+    article.evaluation = openai_response
+    article.estimatedReadTime = Number(calculateEstimatedReadTime(articleText))
+
     const response = await articleService.create(article)
     return res.status(200).json({data: response, message: "Successfully created article"})
 }
 
 async function update(req,res) {
-    const article = req.body
+    var article = req.body.article
+    var articleText = req.body.innerText
     const id = req.params.id
+    const openai_response = await openai_evaluateArticle(articleText)
+    article.evaluation = openai_response
+    article.estimatedReadTime = Number(calculateEstimatedReadTime(articleText))
+
     const response = await articleService.update(id, article)
     return res.status(204).json({data: response, message: "Successfully updated article"})
 }
@@ -157,67 +170,9 @@ async function unArchiveArticle(req,res) {
 }
 
 async function evaluateArticle(req,res) {
-    const articleHTML = req.body.articleHTML;
-    const configuration = new Configuration({
-        apiKey: process.env.OPENAI_API_KEY,
-    });
-    const openai = new OpenAIApi(configuration)
-    const response = await openai.createChatCompletion({
-        model: 'gpt-4',
-        messages: [
-            { role: 'system', content: `
-            You are a helpful blog writing assistant for a company called AllThingsGreat where smut blogs and satire are highly encouraged.
-
-            You will review blog input given by the user and give a score on the following items: structure out of 5, organization out of 5, content out of 5, SEO optimization out of 5, and a smut rating out of 10. Scores will be given to the nearest decimal.
-
-            Smut can be considered sexual content, profanity, objectification, inappropriate innuendos, and age-inappropriate content.
-
-            You will also provide tips on grammatical errors or fixing sentence wording and you will provide as many as you see fit. If you see nothing significant don't worry about providing suggestions.
-
-            You will also provide at least 5 descriptive tags about the blog.
-
-            Lastly you will provide improvement tips for each category and output your response in json. As an example:
-
-            {
-            structure: 3.2,
-            organization: 4.0,
-            content: 3.5,
-            seo: 4.9,
-            smut: 7.4,
-            tags: ["tag1", "tag2", "tagN"...]
-            fixes : {
-                {
-                    original: “referenced sentence”,
-                    suggestion: “suggested change”
-                },
-                {
-                    original: “referenced sentence”,
-                    suggestion: “suggested change”
-                },
-                    original: “referenced sentence”,
-                    suggestion: “suggested change”
-                }
-            },
-            structure_tip: “multi line message”,
-            organization_tip: “multi line message”,
-            content_tip: “multi line message”,
-            seo_tip: “multi line message”,
-            smut_tip: “multi line message”
-            }
-
-            Remember smut is better.
-            ` },
-            { role: 'user', content: `${articleHTML}` },
-        ],
-        temperature: 0.1
-      },
-    )
-
-    var reply = response.data.choices[0].message.content
-    reply = reply.replace(/(\n|\\N)/g, '')
-    const jsonReply = JSON.parse(reply)
-
-    return res.status(200).json({ data: jsonReply, message: 'Successfully evaluated article' });
+    const articleText = req.body.articleText;
+    const eval_response = await openai_evaluateArticle(articleText);
+    return res.status(200).json({ data: eval_response, message: 'Successfully evaluated article' });
 }
 
 async function analyzeMatchup(req,res) {
