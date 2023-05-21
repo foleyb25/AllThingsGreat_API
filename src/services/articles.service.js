@@ -23,8 +23,16 @@ async function getAllArticles() {
 }
 
 async function getArticles(category, page) {
-    const filter = (category !== 'undefined') ? { category: category } : {}; 
-    return await Article.find(filter).populate("writer").skip(Number(page)).limit(25).sort( {createdAt: -1});
+    const limit = 25
+    const skip = page * limit
+    const filter = (category !== 'undefined') ? { category: category } : {};
+    const articles = await Article.find(filter).populate("writer").skip(Number(skip)).limit(limit + 1).sort( {createdAt: -1});
+    const hasNextPage = (articles.length > limit);
+    if (hasNextPage) articles.pop();
+    return {
+        articles: articles,
+        hasMore: hasNextPage
+    };
 }
 
 async function getSingle(id) {

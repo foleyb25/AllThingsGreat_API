@@ -65,10 +65,31 @@ async function create(req,res) {
         lower: true  // result in lower case
     })
     article.slug = `${slugTitle}-${uniqueNumber}`
-
+    if (process.env.NODE_ENV === 'production') {
     const openai_response = await openai_evaluateArticle(articleText)
     
     article.evaluation = openai_response
+    } else {
+        article.evaluation = {
+            structure: 4.5,
+            organization: 3.4,
+            content: 1.2,
+            seo: 3.5,
+            smut: 5.4,
+            tags: ["test", "tags", "this is test"],
+            fixes: [
+                {
+                    original: "test",
+                    fix: "test"
+                }
+            ],
+            structure_tip: "test structure tip",
+            organization_tip: "test organization tip",
+            content_tip: "test content tip",
+            seo_tip: "test seo tip",
+            smut_tip: "test smut tip",
+        }
+    }
     article.estimatedReadTime = Number(calculateEstimatedReadTime(articleText))
 
     const response = await articleService.create(article)
@@ -138,11 +159,10 @@ async function getArticles(req,res) {
             category = MATCHUP
             break;
         default:
-            console.log("Could not find category")
     }
     const page = req.params.page
     const response = await articleService.getArticles(category, page)
-    return res.status(200).json({data: response, message: "Successfully retrieved bucket all articles"})
+    return res.status(200).json({data: response.articles, hasMore: response.hasMore, message: "Successfully retrieved bucket all articles"})
 }
 
 async function approveArticle(req,res) {
