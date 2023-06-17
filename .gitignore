@@ -20,6 +20,8 @@ swagger-output.json
 # Thumbnails
 ._*
 
+
+
 # fly.io
 fly.toml
 
