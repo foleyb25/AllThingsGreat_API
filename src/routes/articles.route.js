@@ -18,7 +18,7 @@ router.patch(`/update/:id`, jwtCheck, Article.update);
 router.post(`/uploadImage/writer/:writerId`, [jwtCheck, upload.single("file")] , Article.uploadArticleImage)
 router.get(`/getImageUrls/writer/:writerId`, jwtCheck, Article.getBucketUrls);
 router.post(`/uploadProfileImage/writer/:writerId`, [jwtCheck, upload.single("file")] , Article.uploadProfileImage)
-router.get('/test', Article.getArticleById)
+// router.get('/test', Article.getArticleById)
 router.post('/evaluate', jwtCheck, Article.evaluateArticle)
 router.post('/game/analyze', jwtCheck, Article.analyzeMatchup)
 router.patch('/:id/approve', jwtCheck, Article.approveArticle)

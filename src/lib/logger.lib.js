@@ -17,7 +17,10 @@ exports.createLogger = () => {
   const mongodbTransport = new winston.transports.MongoDB({
     level: 'info',
     //mongo database connection link
-    db: process.env.LOG_DB,
+    db: process.env.LOG_DB.replace(
+      '<password>',
+      process.env.DB_PASSWORD
+    ),
     options: {
       useUnifiedTopology: true,
       poolSize: 2,

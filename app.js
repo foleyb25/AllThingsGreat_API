@@ -1,5 +1,4 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const cors = require('cors');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -15,7 +14,6 @@ const { ERROR_404 } = require('./src/lib/constants.lib');
 const {API_V2} = require("./src/lib/constants.lib")
 
 const app = express();
-dotenv.config({ path: './.env' }); //load environment variables
 app.enable('trust proxy');
 //middleware
 app.use(cors());
@@ -72,19 +70,19 @@ app.use(compression()); //added the compression middleware to help compress text
 
 //Routes prefix
 app.use(`${API_V2}/articles`, require("./src/routes/articles.route"));
+app.use(`${API_V2}/writers`, require("./src/routes/writers.route"));
 // app.use(``, require("./src/routes/comments.route"));
 // app.use(`${API_V2}/screenplayreviews`, require("./src/routes/screenplayreviews.route"));
-app.use(`${API_V2}/screenplays`, require("./src/routes/screenplays.route"));
+// app.use(`${API_V2}/screenplays`, require("./src/routes/screenplays.route"));
 // app.use(``, require("./src/routes/users.route"));
 // app.use(``, require("./src/routes/watchservices.route"));
-app.use(`${API_V2}/writers`, require("./src/routes/writers.route"));
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
     app.use(morgan('dev')); //using the morgan logging middleware for development
   }
-  if (process.env.NODE_ENV !== 'test') {
-    // const { createLogger } = require('./src/lib/logger.lib');
-    // const logger = createLogger();
+  if (process.env.NODE_ENV === 'production') {
+    const { createLogger } = require('./src/lib/logger.lib');
+    const logger = createLogger();
     //log requests that results in http code >=400
     app.use(
       morgan(
@@ -103,13 +101,13 @@ if (process.env.NODE_ENV !== 'production') {
           skip: function (req, res) {
             return res.statusCode < 400;
           },
-          // stream: {
-          //   // Configure Morgan to use our custom logger
-          //   write: (message) =>
-          //     logger.warn(`incoming-request`, {
-          //       requestPayload: JSON.parse(message),
-          //     }),
-          // },
+          stream: {
+            // Configure Morgan to use our custom logger
+            write: (message) =>
+              logger.warn(`incoming-request`, {
+                requestPayload: JSON.parse(message),
+              }),
+          },
         }
       )
     );

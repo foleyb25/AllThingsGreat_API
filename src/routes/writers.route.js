@@ -15,8 +15,4 @@ router.get(`/getProfileImageUrls/:writerId`, jwtCheck, Writer.getProfileBucketUr
 router.patch('/:id/draft', jwtCheck, Writer.saveDraft)
 router.delete('/:writerId/draft/:draftId', jwtCheck, Writer.deleteDraft)
 
-
-
-// router.delete(`${writers_slug}:id`, Writer.remove);
-
 module.exports = router;

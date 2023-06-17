@@ -43,7 +43,6 @@ async function getImageUrls(bucket, prefix) {
             }
             s3.listObjects(params, async (err, data) => {
                 if(err) {
-                    console.log(err)
                     throw new AppError(`Failed to upload image to server: ${err.message}`, ERROR_500)
                 }
     
