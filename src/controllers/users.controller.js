@@ -9,11 +9,12 @@ https://www.coreycleary.me/what-is-the-difference-between-controllers-and-servic
 const autoCatch = require("../lib/auto_catch.lib")
 const AppError = require("../lib/app_error.lib");
 const { ERROR_400, ERROR_500, OK_CREATED } = require('../lib/constants.lib');
-const userService = require("../services/users.service.js")
+const userService = require("../services/users.service.js");
+const { request } = require("../../app");
 
-    async function submitApplication(req,res) {
+    async function submitApplication(req,res, next) {
         if (req.body.pronouns) {
-            throw new AppError("Honeypot detected", ERROR_400)
+            return res.status(400).json({message: "Bad request"})
         }
         const data = await userService.submitApplication(req.body);
         return res.status(200).json(data);
