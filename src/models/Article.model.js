@@ -9,40 +9,56 @@ https://mongoosejs.com/docs/api.html
 
 const mongoose = require('mongoose');
 
+    // Define the Comment schema
+    const commentSchema =  mongoose.Schema({
+        message: {
+            type: String,
+            // required: true
+        },
+        user: {
+            type: String,
+            // required: true
+        },
+        replies: {
+            type: [this], // Here `this` is used to denote that `replies` is an array of `CommentSchema` instances
+            default: []
+        }
+    });
+
 const articleSchema = mongoose.Schema({
 
     rating: {
-        type: 'number', 
+        type: Number, 
         default: 0
     },
 
     numberOfRatings: {
-        type: 'number', 
+        type: Number, 
         default: 0
     },
 
     isArchived: {
-        type: 'boolean', 
+        type: Boolean, 
         default:false
     },
 
     isReviewed: {
-        type: 'boolean', 
+        type: Boolean, 
         default: false
     },
 
     title: {
-        type: 'string', 
+        type: String, 
         required: true
     },
 
     bodyHTML: {
-        type: 'string', 
+        type: String, 
         required: true
     },
 
     imageUrl: {
-        type: 'string', 
+        type: String, 
         required: true
     },
 
@@ -53,10 +69,16 @@ const articleSchema = mongoose.Schema({
     },
 
     category: {
-        type: 'string', 
+        type: String, 
         default: "AllThingsGreat",
         required: true
         
+    },
+
+    comments: {
+        type: [commentSchema], // Array of comments
+        default: [],
+        required: false
     },
 
     tags: [],
@@ -64,32 +86,32 @@ const articleSchema = mongoose.Schema({
     moods: [],
 
     slug: {
-        type: 'string',
+        type: String,
         default: null,
     },
 
     isPinned: {
-        type: 'boolean',
+        type: Boolean,
         default: false,
     },
 
     createdAt: { 
-        type: 'number',
+        type: Number,
         default: Date.now()
     },
 
     updatedAt: { 
-        type: 'number',
+        type: Number,
         default: Date.now()
     },
 
     estimatedReadTime: {
-        type: 'number',
+        type: Number,
         default: 0
     },
 
     evaluation: {
-        type: 'Object',
+        type: Object,
         default: {}
     }
 },

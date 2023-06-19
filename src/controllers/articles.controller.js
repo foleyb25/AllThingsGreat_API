@@ -12,6 +12,7 @@ const { ERROR_400, ERROR_500, OK_CREATED,
     ATG,
     CS,
     CRYPTO,
+    COLFOOT,
     AIT,
     HEALTH,
     EXTRAORDINARY,
@@ -66,9 +67,8 @@ async function create(req,res) {
     })
     article.slug = `${slugTitle}-${uniqueNumber}`
     if (process.env.NODE_ENV === 'production') {
-    const openai_response = await openai_evaluateArticle(articleText)
-    
-    article.evaluation = openai_response
+        const openai_response = await openai_evaluateArticle(articleText)
+        article.evaluation = openai_response
     } else {
         article.evaluation = {
             structure: 4.5,
@@ -143,8 +143,8 @@ async function getArticles(req,res) {
         case "combatsports":
             category = CS
             break;
-        case "cryptocurrency":
-            category = CRYPTO
+        case "collegefootball":
+            category = COLFOOT
             break;
         case "ait":
             category = AIT

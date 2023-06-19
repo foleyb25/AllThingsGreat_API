@@ -35,6 +35,7 @@ exports.API_V2 = '/api/v2';
 exports.ATG = "AllThingsGreat";
 exports.CS = "Combat Sports";
 exports.CRYPTO = "Cryptocurrency";
+exports.COLFOOT = "College Football";
 exports.AIT = "A.I. & Technology"
 exports.HEALTH = "Health & Fitness";
 exports.EXTRAORDINARY = "Extraordinary";
