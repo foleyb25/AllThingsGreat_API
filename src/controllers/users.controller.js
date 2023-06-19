@@ -11,6 +11,22 @@ const AppError = require("../lib/app_error.lib");
 const { ERROR_400, ERROR_500, OK_CREATED } = require('../lib/constants.lib');
 const userService = require("../services/users.service.js")
 
+    async function submitApplication(req,res) {
+        if (req.body.pronouns) {
+            throw new AppError("Honeypot detected", ERROR_400)
+        }
+        const data = await userService.submitApplication(req.body);
+        return res.status(200).json(data);
+    }
+
+    async function getApplications(req,res) {
+        const data = await userService.getApplications(req.body);
+        return res.status(200).json(data);
+    }
+    
+
+
+
     // async function getAll(req,res) {
     //     const data = await userService.getMultiple(0);
     //     return res.status(200).json(data);
@@ -45,6 +61,8 @@ const userService = require("../services/users.service.js")
     // }
 
 module.exports = autoCatch({
+    submitApplication,
+    getApplications
     // getAll,
     // getById,
     // create,

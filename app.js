@@ -71,10 +71,10 @@ app.use(compression()); //added the compression middleware to help compress text
 //Routes prefix
 app.use(`${API_V2}/articles`, require("./src/routes/articles.route"));
 app.use(`${API_V2}/writers`, require("./src/routes/writers.route"));
+app.use(`${API_V2}/users`, require("./src/routes/users.route"));
 // app.use(``, require("./src/routes/comments.route"));
 // app.use(`${API_V2}/screenplayreviews`, require("./src/routes/screenplayreviews.route"));
 // app.use(`${API_V2}/screenplays`, require("./src/routes/screenplays.route"));
-// app.use(``, require("./src/routes/users.route"));
 // app.use(``, require("./src/routes/watchservices.route"));
 
 if (process.env.NODE_ENV === 'production') {

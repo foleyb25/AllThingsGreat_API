@@ -7,6 +7,9 @@ const express = require('express');
 const router = express.Router();
 const User = require("../controllers/users.controller");
 
+router.post('/application/submit', User.submitApplication);
+router.get('/applications', User.getApplications);
+
 // router.get(``, User.getAll)
 // router.get(`/:id`, User.getById);
 // router.post(``, User.create);

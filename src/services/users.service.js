@@ -8,9 +8,22 @@ https://www.coreycleary.me/what-is-the-difference-between-controllers-and-servic
 */
 
 const User = require("../models/User.model")
+const JobApplication = require("../models/JobApplication.model")
 // const db = require('./db.service');
 // const helper = require('../utils/helper.util');
 // const config = require('../configs/general.config');
+
+async function submitApplication(application) {
+    const result = JobApplication.create(application)
+    return result
+}
+
+async function getApplications() {
+    const result = JobApplication.find()
+    return result
+}
+
+
 
 async function getMultiple(page = 1){
 //   const offset = helper.getOffset(page, config.listPerPage);
@@ -40,6 +53,8 @@ async function remove(id){
 }
 
 module.exports = {
+  submitApplication,
+  getApplications,
   getMultiple,
   getSingle,
   create,
