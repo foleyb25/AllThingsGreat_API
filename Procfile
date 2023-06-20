@@ -1,2 +1,2 @@
 web: node start.js
-worker: node worker.js
+worker: node ./src/lib/worker.lib.js

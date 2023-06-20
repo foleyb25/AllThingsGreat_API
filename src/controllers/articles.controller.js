@@ -31,7 +31,7 @@ const slugify = require('slugify')
 const { openai_evaluateArticle } = require('../lib/openai_api.lib')
 const CustomLogger = require('../lib/customLogger.lib');
 const logger = new CustomLogger();
-const { evaluateQueue } = require('../lib/jobQueue.lib');
+const { evaluateQueue } = require('../lib/worker.lib');
 
 async function uploadArticleImage(req,res) {
     const writerId = req.params.writerId
@@ -227,7 +227,7 @@ async function evaluateArticle(req,res) {
 async function getJobStatus(req, res) {
     try {
         logger.info(`getting job by id, ${req.params.jobId}`)
-        const job = await evaluateQueue.getJob(req.params.jobId);
+        const job = await evaluateQueue.getJob(2);
         logger.info(`job: ${job !== null ? JSON.stringify(job) : 'null'}`)
         if (job === null) {
           logger.info("Job does not exist")
