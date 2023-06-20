@@ -1,5 +1,5 @@
 const {Configuration, OpenAIApi} = require('openai');
-const CustomLogger = require('./src/lib/customLogger.lib');
+const CustomLogger = require('./customLogger.lib');
 const logger = new CustomLogger();
 
 exports.openai_evaluateArticle = async (articleText) => {

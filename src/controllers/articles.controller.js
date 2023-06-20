@@ -29,7 +29,7 @@ const cheerio = require('cheerio');
 const {timeStringToSeconds, secondsToTimeString, calculateEstimatedReadTime} = require('../lib/helper.lib')
 const slugify = require('slugify')
 const { openai_evaluateArticle } = require('../lib/openai_api.lib')
-const CustomLogger = require('./src/lib/customLogger.lib');
+const CustomLogger = require('../lib/customLogger.lib');
 const logger = new CustomLogger();
 
 async function uploadArticleImage(req,res) {
