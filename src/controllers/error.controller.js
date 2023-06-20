@@ -1,6 +1,7 @@
 const AppError = require('../lib/app_error.lib');
-// const { createLogger } = require('../lib/logger.lib');
+const  CustomLogger = require('../lib/customLogger.lib');
 const { ERROR_400, ERROR_500 } = require('../lib/constants.lib');
+const logger = new CustomLogger()
 
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}`;
@@ -37,8 +38,7 @@ module.exports = (err, req, res, next) => {
   err.status = err.status ?? 'error';
 
   if (process.env.NODE_ENV !== 'test') {
-    // const logger = createLogger();
-    // logger.error(err);
+    logger.error(err);
   }
 
   if (process.env.NODE_ENV === 'development') {

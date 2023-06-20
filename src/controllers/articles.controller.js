@@ -31,6 +31,7 @@ const slugify = require('slugify')
 const { openai_evaluateArticle } = require('../lib/openai_api.lib')
 const CustomLogger = require('../lib/customLogger.lib');
 const logger = new CustomLogger();
+const { evaluateQueue } = require('../lib/jobQueue.lib');
 
 async function uploadArticleImage(req,res) {
     const writerId = req.params.writerId
@@ -216,11 +217,41 @@ async function unArchiveArticle(req,res) {
 }
 
 async function evaluateArticle(req,res) {
-    const articleText = req.body.articleText;
-    const eval_response = await openai_evaluateArticle(articleText);
-    logger.info("Successfully evaluated article")
-    return res.status(200).json({ data: eval_response, message: 'Successfully evaluated article' });
+    const job = await evaluateQueue.add({
+        articleText: req.body.articleText,
+      });
+    logger.info(`Successfully added evaluate job to queue, ${JSON.stringify(job)}`)
+    return res.status(200).json({ job: job.id, message: 'Successfully started evaluation' });
 }
+
+async function getJobStatus(req, res) {
+    try {
+        logger.info(`getting job by id, ${req.params.jobId}`)
+        const job = await evaluateQueue.getJob(req.params.jobId);
+        logger.info(`job: ${job !== null ? JSON.stringify(job) : 'null'}`)
+        if (job === null) {
+          logger.info("Job does not exist")
+          res.status(404).end(); // Job not found
+        } else {
+          const state = await job.getState();
+          if (state === 'completed') {
+            const result = await job.finished();
+            logger.info(`Job completed. JOB: ${JSON.stringify(result)}`)
+            res.status(200).json({ data: result });
+          } else if (state === 'failed') {
+            logger.info("Job failed")
+            res.status(500).end(); // Job failed
+          } else {
+            logger.info("Job not finished yet")
+            res.status(202).end(); // Job not yet finished
+          }
+        }
+    } catch (error) {
+        logger.error("Job failed", error)
+    }
+
+  }
+
 
 async function analyzeMatchup(req,res) {
     const userAgentList = [
@@ -360,5 +391,6 @@ module.exports = autoCatch({
     unArchiveArticle,
     evaluateArticle,
     analyzeMatchup,
-    getArticleBySlug
+    getArticleBySlug,
+    getJobStatus,
 })
