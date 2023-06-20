@@ -39,8 +39,8 @@ app.use(
       directives: {
         'child-src': ['blob:'],
         'connect-src': [
-          'https://*.fly.dev',
           `http://localhost:${process.env.PORT}`,
+          'https://allthingsgreatwriter.app',
         ],
         'default-src': ["'self'"],
         'font-src': ["'self'", 'https://fonts.gstatic.com'],
