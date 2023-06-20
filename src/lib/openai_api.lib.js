@@ -23,6 +23,7 @@ exports.openai_evaluateArticle = async (articleText) => {
 
     var reply = response.data.choices[0].message.content
     reply = reply.replace(/(\n|\\N)/g, '')
+    logger.info('Parsing response from openAI...');
     return JSON.parse(reply)
 }
 

@@ -218,6 +218,7 @@ async function unArchiveArticle(req,res) {
 async function evaluateArticle(req,res) {
     const articleText = req.body.articleText;
     const eval_response = await openai_evaluateArticle(articleText);
+    logger.info("Successfully evaluated article")
     return res.status(200).json({ data: eval_response, message: 'Successfully evaluated article' });
 }
 
