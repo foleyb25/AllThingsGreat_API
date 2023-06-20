@@ -1,10 +1,13 @@
 const {Configuration, OpenAIApi} = require('openai');
+const CustomLogger = require('./src/lib/customLogger.lib');
+const logger = new CustomLogger();
 
 exports.openai_evaluateArticle = async (articleText) => {
     const configuration = new Configuration({
         apiKey: process.env.OPENAI_API_KEY,
     });
     const openai = new OpenAIApi(configuration)
+    logger.info('Evaluating Article via OpenAI API');
     const response = await openai.createChatCompletion({
         model: 'gpt-4',
         messages: [
@@ -15,6 +18,8 @@ exports.openai_evaluateArticle = async (articleText) => {
         temperature: 0.1
       },
     )
+
+    logger.info('Evaluation Complete');
 
     var reply = response.data.choices[0].message.content
     reply = reply.replace(/(\n|\\N)/g, '')

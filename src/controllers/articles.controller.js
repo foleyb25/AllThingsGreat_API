@@ -29,6 +29,8 @@ const cheerio = require('cheerio');
 const {timeStringToSeconds, secondsToTimeString, calculateEstimatedReadTime} = require('../lib/helper.lib')
 const slugify = require('slugify')
 const { openai_evaluateArticle } = require('../lib/openai_api.lib')
+const CustomLogger = require('./src/lib/customLogger.lib');
+const logger = new CustomLogger();
 
 async function uploadArticleImage(req,res) {
     const writerId = req.params.writerId
@@ -55,6 +57,7 @@ async function getBucketUrls(req,res) {
 }
 
 async function create(req,res) {
+    logger.info('INFO: Creating article...');
     var article = req.body.article
     var articleText = req.body.innerText
 
