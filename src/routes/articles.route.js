@@ -11,7 +11,7 @@ const {upload} = require("../lib/multer.lib")
 
 
 router.get(`/category/:category/page/:page`, Article.getArticles);
-router.get(`/writer`, Article.getAllArticles);
+router.get(`/writer`, jwtCheck, Article.getAllArticles);
 router.get(`/writer/:id`, Article.getArticlesByWriterId);
 router.post(`/create`, jwtCheck, Article.create);
 router.patch(`/update/:id`, jwtCheck, Article.update);

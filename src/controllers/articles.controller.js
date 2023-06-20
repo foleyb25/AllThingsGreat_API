@@ -100,8 +100,32 @@ async function update(req,res) {
     var article = req.body.article
     var articleText = req.body.innerText
     const id = req.params.id
-    const openai_response = await openai_evaluateArticle(articleText)
-    article.evaluation = openai_response
+    
+    if (process.env.NODE_ENV === 'production') {
+        const openai_response = await openai_evaluateArticle(articleText)
+        article.evaluation = openai_response
+    } else {
+        article.evaluation = {
+            structure: 4.5,
+            organization: 3.4,
+            content: 1.2,
+            seo: 3.5,
+            smut: 5.4,
+            tags: ["test", "tags", "this is test"],
+            fixes: [
+                {
+                    original: "test",
+                    fix: "test"
+                }
+            ],
+            structure_tip: "test structure tip",
+            organization_tip: "test organization tip",
+            content_tip: "test content tip",
+            seo_tip: "test seo tip",
+            smut_tip: "test smut tip",
+        }
+    }
+
     article.estimatedReadTime = Number(calculateEstimatedReadTime(articleText))
 
     const response = await articleService.update(id, article)
@@ -133,7 +157,6 @@ async function getAllArticles(req,res) {
     return res.status(200).json({data: response, message: "Successfully retrieved bucket all articles"})
 }
 
-// /api/v2/articles/writer
 async function getArticles(req,res) {
     var category = req.params.category
     switch (category) {

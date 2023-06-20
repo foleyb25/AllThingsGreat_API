@@ -25,7 +25,7 @@ async function getAllArticles() {
 async function getArticles(category, page) {
     const limit = 25
     const skip = page * limit
-    const filter = (category !== 'undefined') ? { category: category } : {};
+    const filter = (category !== 'undefined') ? { category: category, isArchived: false, isReviewed: true } : {isArchived: false, isReviewed: true};
     const articles = await Article.find(filter).populate("writer").skip(Number(skip)).limit(limit + 1).sort( {createdAt: -1});
     const hasNextPage = (articles.length > limit);
     if (hasNextPage) articles.pop();

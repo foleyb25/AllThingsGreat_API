@@ -24,7 +24,7 @@ async function uploadFile(file, bucket) {
                 if(err) {
                     reject(err)
                 }
-                resolve("success")
+                resolve({status: "success", data:data})
             })
         } catch (err) {
             reject(err)
