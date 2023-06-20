@@ -11,8 +11,8 @@ evaluateQueue.process(async (job) => {
   try {
     console.log("log: processing job")
     logger.info(`processing job, ${job.id}`);
-    const result = await openai_evaluateArticle(job.data.articleText);
-    return result;
+    // const result = await openai_evaluateArticle(job.data.articleText);
+    return job;
   } catch (error) {
     console.log("error: processing job")
     logger.error(`error processing job ${job.id}: ${error.message}`);
