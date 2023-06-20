@@ -241,9 +241,12 @@ async function getJobStatus(req, res) {
           } else if (state === 'failed') {
             logger.info("Job failed")
             res.status(500).end(); // Job failed
+          } else if (state === 'active') {
+            logger.info("Job is currently in progress")
+            res.status(202).end(); // Job is in progress
           } else {
-            logger.info("Job not finished yet")
-            res.status(202).end(); // Job not yet finished
+            logger.info("Job is in the queue but not yet processed")
+            res.status(202).end(); // Job not yet processed
           }
         }
     } catch (error) {
