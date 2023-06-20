@@ -41,6 +41,7 @@ app.use(
         'connect-src': [
           `http://localhost:${process.env.PORT}`,
           'https://allthingsgreatwriter.app',
+          'https://allthingsgreat.com',
         ],
         'default-src': ["'self'"],
         'font-src': ["'self'", 'https://fonts.gstatic.com'],
