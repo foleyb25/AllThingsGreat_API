@@ -31,7 +31,7 @@ const slugify = require('slugify')
 const { openai_evaluateArticle } = require('../lib/openai_api.lib')
 const CustomLogger = require('../lib/customLogger.lib');
 const logger = new CustomLogger();
-const { evaluateQueue } = require('../lib/worker.lib');
+const { evaluateQueue, createQueue, updateQueue } = require('../lib/worker.lib');
 
 async function uploadArticleImage(req,res) {
     const writerId = req.params.writerId
@@ -58,83 +58,38 @@ async function getBucketUrls(req,res) {
 }
 
 async function create(req,res) {
-    logger.info('INFO: Creating article...');
-    var article = req.body.article
-    var articleText = req.body.innerText
-
-    let uniqueNumber = Math.floor(10000000 + Math.random() * 90000000)
-    // Normalize the title by converting it to lowercase and replacing spaces with hyphens
-    let slugTitle = slugify(article.title, {
-        replacement: '-',  // replace spaces with replacement
-        remove: /[*+~.()'"!:@]/g, // regex to remove characters
-        lower: true  // result in lower case
-    })
-    article.slug = `${slugTitle}-${uniqueNumber}`
-    if (process.env.NODE_ENV === 'production') {
-        const openai_response = await openai_evaluateArticle(articleText)
-        article.evaluation = openai_response
-    } else {
-        article.evaluation = {
-            structure: 4.5,
-            organization: 3.4,
-            content: 1.2,
-            seo: 3.5,
-            smut: 5.4,
-            tags: ["test", "tags", "this is test"],
-            fixes: [
-                {
-                    original: "test",
-                    fix: "test"
-                }
-            ],
-            structure_tip: "test structure tip",
-            organization_tip: "test organization tip",
-            content_tip: "test content tip",
-            seo_tip: "test seo tip",
-            smut_tip: "test smut tip",
-        }
-    }
-    article.estimatedReadTime = Number(calculateEstimatedReadTime(articleText))
-
-    const response = await articleService.create(article)
-    return res.status(200).json({data: response, message: "Successfully created article"})
+    logger.info("Adding job to queue...")
+    const job = await createQueue.add({
+        article: req.body.article,
+        articleText: req.body.innerText
+    });
+    
+    logger.info(`Successfully added create job to queue, ${JSON.stringify(job)}`)
+    return res.status(200).json({ job: job.id, message: 'Successfully started article creation' });
 }
 
 async function update(req,res) {
-    var article = req.body.article
-    var articleText = req.body.innerText
-    const id = req.params.id
+    logger.info("Adding job to queue...")
+    const job = await updateQueue.add({
+        article: req.body.article,
+        articleText: req.body.innerText,
+        id: req.params.id
+    });
+
+    console.log(job.id)
     
-    if (process.env.NODE_ENV === 'production') {
-        const openai_response = await openai_evaluateArticle(articleText)
-        article.evaluation = openai_response
-    } else {
-        article.evaluation = {
-            structure: 4.5,
-            organization: 3.4,
-            content: 1.2,
-            seo: 3.5,
-            smut: 5.4,
-            tags: ["test", "tags", "this is test"],
-            fixes: [
-                {
-                    original: "test",
-                    fix: "test"
-                }
-            ],
-            structure_tip: "test structure tip",
-            organization_tip: "test organization tip",
-            content_tip: "test content tip",
-            seo_tip: "test seo tip",
-            smut_tip: "test smut tip",
-        }
-    }
-
-    article.estimatedReadTime = Number(calculateEstimatedReadTime(articleText))
-
-    const response = await articleService.update(id, article)
-    return res.status(204).json({data: response, message: "Successfully updated article"})
+    logger.info(`Successfully added create job to queue, ${JSON.stringify(job)}`)
+    return res.status(200).json({job: job.id, message: "Successfully started article update"})
 }
+
+async function evaluateArticle(req,res) {
+    const job = await evaluateQueue.add({
+        articleText: req.body.articleText,
+      });
+    logger.info(`Successfully added evaluate job to queue, ${JSON.stringify(job)}`)
+    return res.status(200).json({ job: job.id, message: 'Successfully started evaluation' });
+}
+
 
 async function getArticleById(req,res) {
     const articleId = req.params.id
@@ -216,18 +171,23 @@ async function unArchiveArticle(req,res) {
     return res.status(200).json({data: response, message: "Successfully un-archived article"})
 }
 
-async function evaluateArticle(req,res) {
-    const job = await evaluateQueue.add({
-        articleText: req.body.articleText,
-      });
-    logger.info(`Successfully added evaluate job to queue, ${JSON.stringify(job)}`)
-    return res.status(200).json({ job: job.id, message: 'Successfully started evaluation' });
-}
-
-async function getJobStatus(req, res) {
+async function getEvalJobStatus(req, res) {
+    let job 
     try {
-        logger.info(`getting job by id, ${req.params.jobId}`)
-        const job = await evaluateQueue.getJob(2);
+    logger.info(`getting job by id, ${req.params.jobId}`)
+    switch (req.params.queueType) {
+        case 'eval':
+            job = await evaluateQueue.getJob(req.params.jobId)
+            break;
+        case 'create':
+            job = await createQueue.getJob(req.params.jobId)
+            break;
+        case 'update':
+            job = await updateQueue.getJob(req.params.jobId)
+            break;
+        default:
+            logger.info("Queue type not found")
+    }
         logger.info(`job: ${job !== null ? JSON.stringify(job) : 'null'}`)
         if (job === null) {
           logger.info("Job does not exist")
@@ -236,7 +196,7 @@ async function getJobStatus(req, res) {
           const state = await job.getState();
           if (state === 'completed') {
             const result = await job.finished();
-            logger.info(`Job completed. JOB: ${JSON.stringify(result)}`)
+            logger.info(`Job completed. JOB: ${JSON.stringify(job)}`)
             res.status(200).json({ data: result });
           } else if (state === 'failed') {
             logger.info("Job failed")
@@ -395,5 +355,5 @@ module.exports = autoCatch({
     evaluateArticle,
     analyzeMatchup,
     getArticleBySlug,
-    getJobStatus,
+    getEvalJobStatus,
 })
