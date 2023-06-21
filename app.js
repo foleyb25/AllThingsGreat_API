@@ -32,27 +32,27 @@ app.use('*', limiter);
 
 app.use(express.json({limit: "150kb"}));
 app.use(express.urlencoded({ extended: true, limit: "150kb" }));
-app.use(
-  helmet({
-    crossOriginEmbedderPolicy: false,
-    contentSecurityPolicy: {
-      directives: {
-        'child-src': ['blob:'],
-        'connect-src': [
-          `http://localhost:${process.env.PORT}`,
-          'https://allthingsgreatwriter.app',
-          'https://allthingsgreat.com',
-        ],
-        'default-src': ["'self'"],
-        'font-src': ["'self'", 'https://fonts.gstatic.com'],
-        'img-src': ["'self'", 'data:', 'blob:'],
-        'script-src': ["'self'", 'https://*.fly.dev'],
-        'style-src': ["'self'", "'unsafe-inline'", 'https:'],
-        'worker-src': ['blob:'],
-      },
-    },
-  })
-); //added middleware to set security headers
+// app.use(
+//   helmet({
+//     crossOriginEmbedderPolicy: false,
+//     contentSecurityPolicy: {
+//       directives: {
+//         'child-src': ['blob:'],
+//         'connect-src': [
+//           `http://localhost:${process.env.PORT}`,
+//           'https://allthingsgreatwriter.app',
+//           'https://allthingsgreat.com',
+//         ],
+//         'default-src': ["'self'"],
+//         'font-src': ["'self'", 'https://fonts.gstatic.com'],
+//         'img-src': ["'self'", 'data:', 'blob:'],
+//         'script-src': ["'self'", 'https://*.fly.dev'],
+//         'style-src': ["'self'", "'unsafe-inline'", 'https:'],
+//         'worker-src': ['blob:'],
+//       },
+//     },
+//   })
+// ); //added middleware to set security headers
 
 app.use(cookieParser()); //middleware parses cookie data
 //Data Sanitization against NoSQL query injection
