@@ -2,7 +2,7 @@ require('dotenv').config({ path: './.env' });
 const mongoose = require('mongoose');
 const app = require('./app');
 const CustomLogger = require('./src/lib/customLogger.lib');
-const { createQueue, updateQueue, evaluateQueue } = require('./src/lib/worker.lib');
+// const { createQueue, updateQueue, evaluateQueue } = require('./src/lib/worker.lib');
 const { update } = require('./src/services/articles.service');
 
 const logger = new CustomLogger();
@@ -59,9 +59,9 @@ async function shutdown(signal, err = null) {
   
   server.close(async () => {
       try {
-          await createQueue.close();
-            await updateQueue.close();
-            await evaluateQueue.close();
+          // await createQueue.close();
+          //   await updateQueue.close();
+          //   await evaluateQueue.close();
           await mongoose.connection.close();
           logger.info('DB Connection closed');
       } catch (err) {
