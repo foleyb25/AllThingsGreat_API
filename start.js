@@ -10,7 +10,7 @@ const logger = new CustomLogger();
 const connectDB = async () => {
   const DB = process.env.DB_URI.replace(
     '<password>',
-    process.env.DB_PASSWORD
+    process.env.DB_PASSWORD,
   );
   try {
     await mongoose.connect(DB, {
@@ -21,7 +21,7 @@ const connectDB = async () => {
     });
     logger.info('DB Connection successful');
   } catch (err) {
-    logger.error(`DB Connection failed.`, err);
+    logger.error('DB Connection failed.', err);
     process.exit(1);
   }
 };
@@ -49,40 +49,39 @@ async function createServer() {
     logger.error('Error starting server:', err);
   });
 
-async function shutdown(signal, err = null) {
-  if (err) {
+  async function shutdown(signal, err = null) {
+    if (err) {
       logger.error(`${signal} received. Shutting Down due to Unhandled Rejection`, err);
       process.exitCode = 1;
-  } else {
+    } else {
       logger.info(`${signal} received. Shutting down gracefully`);
-  }
-  
-  server.close(async () => {
+    }
+
+    server.close(async () => {
       try {
-          // await createQueue.close();
-          //   await updateQueue.close();
-          //   await evaluateQueue.close();
-          await mongoose.connection.close();
-          logger.info('DB Connection closed');
+        // await createQueue.close();
+        //   await updateQueue.close();
+        //   await evaluateQueue.close();
+        await mongoose.connection.close();
+        logger.info('DB Connection closed');
       } catch (err) {
-          logger.error('Error closing DB Connection', err);
-          process.exitCode = 1;
+        logger.error('Error closing DB Connection', err);
+        process.exitCode = 1;
       } finally {
-          process.exit(process.exitCode);
+        process.exit(process.exitCode);
       }
+    });
+  }
+
+  process.on('unhandledRejection', (err) => {
+    shutdown('Unhandled Rejection', err);
   });
-}
 
-process.on('unhandledRejection', (err) => {
-  shutdown('Unhandled Rejection', err);
-});
+  process.on('SIGTERM', () => {
+    shutdown('SIGTERM');
+  });
 
-process.on('SIGTERM', () => {
-  shutdown('SIGTERM');
-});
-
-process.on('SIGINT', () => {
-  shutdown('SIGINT');
-});
-
-})();
+  process.on('SIGINT', () => {
+    shutdown('SIGINT');
+  });
+}());

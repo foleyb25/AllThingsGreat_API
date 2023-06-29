@@ -1,180 +1,174 @@
 /*
 Screenplay model object
 
-More information on Mongoose Model objects, including validation and much more, can be found in 
+More information on Mongoose Model objects, including validation and much more, can be found in
 the documentation:
 
 https://mongoosejs.com/docs/api.html
 */
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const screenplaySchema = mongoose.Schema({
+const screenplaySchema = mongoose.Schema(
+  {
     reviews: [
-        {
-            writer_id: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'writers',
-            },
-            score: {
-                type: 'number'
-            },
-            article_url: {
-                type: 'string'
-            },
-            createdAt: { 
-                type: 'number',
-                default: Date.now()
-            },
-            updatedAt: { 
-                type: 'number',
-                default: Date.now()
-            },
-        }
+      {
+        writer_id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "writers",
+        },
+        score: {
+          type: "number",
+        },
+        article_url: {
+          type: "string",
+        },
+        createdAt: {
+          type: "number",
+          default: Date.now(),
+        },
+        updatedAt: {
+          type: "number",
+          default: Date.now(),
+        },
+      },
     ],
 
     services: [
-        {
-            tmdb_provider_id: {
-                type: 'number'
-            },
-            name: {
-                type: 'number'
-            },
-            watch_url: {
-                type: 'number'
-            },
-            monetization_type: {
-                type: 'number'
-            },
-            price: {
-                type: 'number'
-            },
-            logo_url: {
-                type: 'number'
-            },
-            createdAt: { 
-                type: 'number',
-                default: Date.now()
-            },
-            updatedAt: { 
-                type: 'number',
-                default: Date.now()
-            },
-        }
+      {
+        tmdb_provider_id: {
+          type: "number",
+        },
+        name: {
+          type: "number",
+        },
+        watch_url: {
+          type: "number",
+        },
+        monetization_type: {
+          type: "number",
+        },
+        price: {
+          type: "number",
+        },
+        logo_url: {
+          type: "number",
+        },
+        createdAt: {
+          type: "number",
+          default: Date.now(),
+        },
+        updatedAt: {
+          type: "number",
+          default: Date.now(),
+        },
+      },
     ],
 
     tmdb_id: {
-        type: 'number'
+      type: "number",
     },
 
     imdb_id: {
-        type: 'string'
+      type: "string",
     },
 
     title: {
-        type: 'string'
+      type: "string",
     },
 
     overview: {
-        type: 'string'
+      type: "string",
     },
 
     media_type: {
-        type: 'string'
+      type: "string",
     },
 
     num_seasons: {
-        type: 'number'
+      type: "number",
     },
 
     runtime: {
-        type: 'string'
+      type: "string",
     },
 
     revenue: {
-        type: 'number'
+      type: "number",
     },
 
     box_office: {
-        type: 'string'
+      type: "string",
     },
 
     budget: {
-        type: 'number'
+      type: "number",
     },
 
     poster_path: {
-        type: 'string'
+      type: "string",
     },
 
     backdrop_path: {
-        type: 'string'
+      type: "string",
     },
 
     homepage_url: {
-        type: 'string'
+      type: "string",
     },
 
     tmdb_score: {
-        type: 'number'
+      type: "number",
     },
 
     imdb_score: {
-        type: 'string'
+      type: "string",
     },
 
     rotten_score: {
-        type: 'string'
+      type: "string",
     },
 
     metacritic_score: {
-        type: 'string'
+      type: "string",
     },
 
     rated: {
-        type: 'string'
+      type: "string",
     },
 
     plot: {
-        type: 'string'
+      type: "string",
     },
 
     actors: {
-        type: 'string'
+      type: "string",
     },
 
     awards: {
-        type: 'string'
+      type: "string",
     },
 
     releasedate: {
-        type: 'string'
+      type: "string",
     },
 
     genre: {
-        type: 'string'
+      type: "string",
     },
 
     director: {
-        type: 'string'
+      type: "string",
     },
 
     writers: {
-        type: 'string'
+      type: "string",
     },
-
-    actors: {
-        type: 'string'
-    },
-
-    awards: {
-        type: 'string'
-    },
-},
-{
-    versionKey: false, // Version key is a Mongoose integration which saves version number to the DB 
-    //by default. Set false here to disable this functionality.
-})
+  },
+  {
+    versionKey: false, // Version key is a Mongoose integration which saves version number to the DB
+    // by default. Set false here to disable this functionality.
+  }
+);
 
 module.exports = mongoose.model("screenplays", screenplaySchema);

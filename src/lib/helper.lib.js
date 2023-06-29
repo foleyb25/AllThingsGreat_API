@@ -1,25 +1,24 @@
 const timeStringToSeconds = (timeString) => {
-    if (!timeString.includes(':')) return;
-    const [minutes, seconds] = timeString.split(':');
-    return Number(minutes) * 60 + Number(seconds);
-  }
+  if (!timeString.includes(":")) return;
+  const [minutes, seconds] = timeString.split(":");
+  return Number(minutes) * 60 + Number(seconds);
+};
 
 const secondsToTimeString = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.round(seconds % 60);
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  }
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.round(seconds % 60);
+  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+};
 
 const calculateEstimatedReadTime = (text) => {
-  var words = text.split(' ');
-  var numWords = words.length;
-  var readingTime = Math.round(numWords / 200);
+  const words = text.split(" ");
+  const numWords = words.length;
+  const readingTime = Math.round(numWords / 200);
   return readingTime;
-}
-
+};
 
 module.exports = {
-    timeStringToSeconds,
-    secondsToTimeString,
-    calculateEstimatedReadTime
-}
+  timeStringToSeconds,
+  secondsToTimeString,
+  calculateEstimatedReadTime,
+};

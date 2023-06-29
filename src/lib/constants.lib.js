@@ -1,17 +1,17 @@
-//HTTP Methods
-exports.GET = 'get';
-exports.POST = 'post';
-exports.PUT = 'put';
-exports.DELETE = 'delete';
-exports.OPTIONS = 'options';
-exports.patch = 'patch';
+// HTTP Methods
+exports.GET = "get";
+exports.POST = "post";
+exports.PUT = "put";
+exports.DELETE = "delete";
+exports.OPTIONS = "options";
+exports.patch = "patch";
 
-//HTTP Client Success responses
+// HTTP Client Success responses
 exports.OK_200 = 200;
 exports.OK_CREATED = 201;
 exports.OK_NO_CONTENT = 204;
-exports.SUCCESS = 'success';
-exports.FAIL = 'fail';
+exports.SUCCESS = "success";
+exports.FAIL = "fail";
 /* HTTP Client Error Responses */
 exports.ERROR_404 = 404; /* Not Found */
 exports.ERROR_400 = 400; /* Bad Request */
@@ -28,15 +28,15 @@ exports.ERROR_500 = 500; /* Internal Server Error */
 exports.ERROR_503 = 503; /* Service Unavailable. Overloaded server. */
 exports.ERROR_511 = 511; /* Network Authentication Required. */
 
-//app constants
-exports.API_V2 = '/api/v2';
+// app constants
+exports.API_V2 = "/api/v2";
 
-//article Categories
+// article Categories
 exports.ATG = "AllThingsGreat";
 exports.CS = "Combat Sports";
 exports.CRYPTO = "Cryptocurrency";
 exports.COLFOOT = "College Football";
-exports.AIT = "A.I. & Technology"
+exports.AIT = "A.I. & Technology";
 exports.HEALTH = "Health & Fitness";
 exports.EXTRAORDINARY = "Extraordinary";
 exports.MATCHUP = "Matchup Analysis";

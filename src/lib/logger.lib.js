@@ -1,26 +1,23 @@
-const winston = require('winston');
-require('winston-daily-rotate-file');
-require('winston-mongodb');
-const { Logtail } = require('@logtail/node');
-const { LogtailTransport } = require('@logtail/winston');
+const winston = require("winston");
+require("winston-daily-rotate-file");
+require("winston-mongodb");
+const { Logtail } = require("@logtail/node");
+const { LogtailTransport } = require("@logtail/winston");
 
 const { combine, timestamp, json, errors } = winston.format;
 
 exports.createLogger = () => {
   const fileRotateTransport = new winston.transports.DailyRotateFile({
-    filename: 'logs/error-%DATE%.log',
-    datePattern: 'YYYY-MM-DD',
-    maxFiles: '365d',
+    filename: "logs/error-%DATE%.log",
+    datePattern: "YYYY-MM-DD",
+    maxFiles: "365d",
   });
   const logTail = new Logtail(process.env.LOGTAIL_TOKEN);
   const logTailTransport = new LogtailTransport(logTail);
   const mongodbTransport = new winston.transports.MongoDB({
-    level: 'info',
-    //mongo database connection link
-    db: process.env.LOG_DB.replace(
-      '<password>',
-      process.env.DB_PASSWORD
-    ),
+    level: "info",
+    // mongo database connection link
+    db: process.env.LOG_DB.replace("<password>", process.env.DB_PASSWORD),
     options: {
       useUnifiedTopology: true,
       poolSize: 2,
@@ -28,14 +25,14 @@ exports.createLogger = () => {
     },
     // A collection to save json formatted logs
     collection: process.env.LOG_COLLECTION,
-    metaKey: 'stack',
+    metaKey: "stack",
   });
 
   return winston.createLogger({
-    level: process.env.LOG_LEVEL || 'info',
+    level: process.env.LOG_LEVEL || "info",
     format: combine(
       timestamp({
-        format: 'YYYY-MM-DD hh:mm:ss.SSS A',
+        format: "YYYY-MM-DD hh:mm:ss.SSS A",
       }),
       json(),
       errors({ stack: true })
@@ -49,12 +46,12 @@ exports.createLogger = () => {
     exceptionHandlers: [
       logTailTransport,
       mongodbTransport,
-      new winston.transports.File({ filename: 'logs/exceptions.log' }),
+      new winston.transports.File({ filename: "logs/exceptions.log" }),
     ],
     rejectionHandlers: [
       logTailTransport,
       mongodbTransport,
-      new winston.transports.File({ filename: 'logs/rejections.log' }),
+      new winston.transports.File({ filename: "logs/rejections.log" }),
     ],
   });
 };

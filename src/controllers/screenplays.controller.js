@@ -6,18 +6,19 @@ More information on the Controller-Service relationship can be found here:
 https://www.coreycleary.me/what-is-the-difference-between-controllers-and-services-in-node-rest-apis
 */
 
-const autoCatch = require("../lib/auto_catch.lib")
-const AppError = require("../lib/app_error.lib");
-const { ERROR_400, ERROR_500, OK_CREATED } = require('../lib/constants.lib');
-const screenplayService = require("../services/screenplays.service.js")
+const autoCatch = require("../lib/auto_catch.lib");
+const screenplayService = require("../services/screenplays.service.js");
 
 async function searchScreenplays(req, res) {
-    const pageNum = req.params.pageNum
-    const searchString = req.params.searchString
-    const screenplays = await screenplayService.getMultipleSearch(searchString, pageNum)
-    return res.status(200).json(screenplays)
+  const { pageNum } = req.params;
+  const { searchString } = req.params;
+  const screenplays = await screenplayService.getMultipleSearch(
+    searchString,
+    pageNum
+  );
+  return res.status(200).json(screenplays);
 }
 
 module.exports = autoCatch({
-    searchScreenplays,
-})
+  searchScreenplays,
+});

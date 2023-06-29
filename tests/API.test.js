@@ -1,25 +1,22 @@
-require('dotenv').config();
-const request = require('supertest');
-const mongoose = require('mongoose');
+require("dotenv").config();
+const request = require("supertest");
+const mongoose = require("mongoose");
 const {
   OK_200,
   OK_CREATED,
   OK_NO_CONTENT,
   ERROR_404,
   ERROR_500,
-} = require('../src/lib/constants.lib');
+} = require("../src/lib/constants.lib");
 // const CustomLogger = require('../src/lib/customLogger.lib');
 
 // let logger = new CustomLogger();
 
 beforeAll((done) => {
-  //connect to test db before running the tests
-  console.log("DB: ", process.env.TEST_DB_URI)
+  // connect to test db before running the tests
+  console.log("DB: ", process.env.TEST_DB_URI);
   mongoose.connect(
-    process.env.TEST_DB_URI.replace(
-      '<password>',
-      process.env.DB_PASSWORD,
-    ),
+    process.env.TEST_DB_URI.replace("<password>", process.env.DB_PASSWORD),
     {
       useNewUrlParser: true,
       useCreateIndex: true,
@@ -31,7 +28,7 @@ beforeAll((done) => {
 });
 
 afterAll(async () => {
-  //empty db after all tests
+  // empty db after all tests
   await mongoose.connection.db.dropDatabase();
   await mongoose.connection.close();
   // if (logger.logger.transports.mongodb) {
@@ -42,7 +39,6 @@ afterAll(async () => {
   //   });
   // }
 });
-
 
 // describe('CustomLogger Class', () => {
 //   let logger;
