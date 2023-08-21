@@ -10,7 +10,9 @@ async function downloadPDF(req, res) {
 
     // Use puppeteer to create the PDF
     const browser = await puppeteer.launch({
-      args: ["--no-sandbox", "--disk-cache-dir=/app/.cache/puppeteer"],
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      headless: true,
+      userDataDir: "./cache",
     });
 
     const page = await browser.newPage();
