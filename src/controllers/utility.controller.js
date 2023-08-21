@@ -1,8 +1,12 @@
 const puppeteer = require("puppeteer");
+const { createLogger } = require("../lib/logger.lib");
+const logger = createLogger();
 
 async function downloadPDF(req, res) {
   try {
     const { html, css } = req.body;
+
+    logger.info("Initializing PDF download...");
 
     // Use puppeteer to create the PDF
     const browser = await puppeteer.launch();
@@ -19,6 +23,7 @@ async function downloadPDF(req, res) {
           </html>
         `;
 
+    logger.info("Setting page content...");
     await page.setContent(fullHtml);
 
     // Take a screenshot of the specific element.
@@ -30,6 +35,7 @@ async function downloadPDF(req, res) {
     const imageDataURI = `data:image/png;base64,${elementScreenshot}`;
 
     // Replace the 'src' of the image element with the screenshot data URI.
+    logger.info("Initializing PDF download...");
     await page.evaluate((dataURI) => {
       const downloadButton = document.querySelector("#downloadButton");
       if (downloadButton) {
@@ -47,7 +53,7 @@ async function downloadPDF(req, res) {
     res.send(pdf);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Failed to generate PDF.");
+    res.status(500).send("Failed to generate PDF.", error);
   }
 }
 
