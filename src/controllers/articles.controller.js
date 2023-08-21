@@ -10,12 +10,24 @@ const { Configuration, OpenAIApi } = require("openai");
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 const cheerio = require("cheerio");
+const Article = require("../models/Article.model");
+const slugify = require("slugify");
+const { calculateEstimatedReadTime } = require("../lib/helper.lib");
 const {
   timeStringToSeconds,
   secondsToTimeString,
 } = require("../lib/helper.lib");
 const { uploadFile, getImageUrls } = require("../utils/AWS.helper");
 const articleService = require("../services/articles.service.js");
+const autoCatch = require("../lib/auto_catch.lib");
+const CustomLogger = require("../lib/customLogger.lib");
+const logger = new CustomLogger();
+const {
+  evaluateQueue,
+  createQueue,
+  updateQueue,
+} = require("../lib/worker.lib");
+
 const {
   ATG,
   CS,
@@ -25,15 +37,6 @@ const {
   EXTRAORDINARY,
   MATCHUP,
 } = require("../lib/constants.lib");
-const autoCatch = require("../lib/auto_catch.lib");
-const CustomLogger = require("../lib/customLogger.lib");
-
-const logger = new CustomLogger();
-const {
-  evaluateQueue,
-  createQueue,
-  updateQueue,
-} = require("../lib/worker.lib");
 
 async function uploadArticleImage(req, res) {
   const { writerId } = req.params;
@@ -65,44 +68,55 @@ async function getBucketUrls(req, res) {
 }
 
 async function create(req, res) {
-  logger.info("Adding job to queue...");
-  const job = await createQueue.add({
-    article: req.body.article,
-    articleText: req.body.innerText,
+  const uniqueNumber = Math.floor(10000000 + Math.random() * 90000000);
+  // Normalize the title by converting it to lowercase and replacing spaces with hyphens
+  const slugTitle = slugify(req.body.article.title, {
+    replacement: "-", // replace spaces with replacement
+    remove: /[*+~.()'"!:@]/g, // regex to remove characters
+    lower: true, // result in lower case
   });
+  logger.info("Setting Slug...");
+  req.body.article.slug = `${slugTitle}-${uniqueNumber}`;
+  req.body.article.slug.estimatedReadTime = Number(
+    calculateEstimatedReadTime(req.body.innerText)
+  );
 
-  logger.info(`Successfully added create job to queue, ${JSON.stringify(job)}`);
+  const article = await Article.create(req.body.article);
+
+  logger.info(`Successfully created article`);
   return res
     .status(200)
-    .json({ job: job.id, message: "Successfully started article creation" });
+    .json({ data: article, message: "Successfully started article creation" });
 }
 
 async function update(req, res) {
-  logger.info("Adding job to queue...");
-  const job = await updateQueue.add({
-    article: req.body.article,
-    articleText: req.body.innerText,
-    id: req.params.id,
-  });
+  logger.info("Updating article...");
 
-  console.log(job.id);
+  req.body.article.estimatedReadTime = Number(
+    calculateEstimatedReadTime(req.body.innerText)
+  );
 
-  logger.info(`Successfully added create job to queue, ${JSON.stringify(job)}`);
+  const article = await Article.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body.article
+  );
+
+  logger.info(`Successfully updated Article`);
   return res
     .status(200)
-    .json({ job: job.id, message: "Successfully started article update" });
+    .json({ data: article, message: "Successfully udpated article" });
 }
 
 async function evaluateArticle(req, res) {
-  const job = await evaluateQueue.add({
-    articleText: req.body.articleText,
-  });
-  logger.info(
-    `Successfully added evaluate job to queue, ${JSON.stringify(job)}`
-  );
-  return res
-    .status(200)
-    .json({ job: job.id, message: "Successfully started evaluation" });
+  // const job = await evaluateQueue.add({
+  //   articleText: req.body.articleText,
+  // });
+  // logger.info(
+  //   `Successfully added evaluate job to queue, ${JSON.stringify(job)}`
+  // );
+  // return res
+  //   .status(200)
+  //   .json({ job: job.id, message: "Successfully started evaluation" });
 }
 
 async function getArticleById(req, res) {
