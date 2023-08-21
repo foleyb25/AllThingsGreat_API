@@ -11,7 +11,8 @@
     "debug": "ndb start.js",
     "lint": "eslint '*/**/*.{js,ts}'",
     "format": "prettier --write '*/**/*.{js,ts,json,md}'",
-    "lint-fix": "eslint '*/**/*.{js,ts}' --fix"
+    "lint-fix": "eslint '*/**/*.{js,ts}' --fix",
+    "heroku-postbuild": "mkdir ./.cache && mv /app/.cache/puppeteer ./.cache"
   },
   "author": "",
   "license": "ISC",
