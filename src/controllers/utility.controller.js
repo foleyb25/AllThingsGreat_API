@@ -9,7 +9,9 @@ async function downloadPDF(req, res) {
     logger.info("Initializing PDF download...");
 
     // Use puppeteer to create the PDF
-    const browser = await puppeteer.launch({});
+    const browser = await puppeteer.launch({
+      args: ["--no-sandbox", "--disk-cache-dir=/app/.cache/puppeteer"],
+    });
 
     const page = await browser.newPage();
 
