@@ -53,7 +53,7 @@ async function downloadPDF(req, res) {
     res.send(pdf);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Failed to generate PDF.", error);
+    res.status(500).send(`Failed to generate PDF: ${error}`);
   }
 }
 
