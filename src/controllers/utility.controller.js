@@ -10,6 +10,8 @@ async function downloadPDF(req, res) {
 
     // Use puppeteer to create the PDF
     const browser = await puppeteer.launch({
+      executablePath:
+        process.env.PUPPETEER_EXECUTABLE_PATH || "google-chrome-stable",
       args: ["--no-sandbox"],
     });
 
