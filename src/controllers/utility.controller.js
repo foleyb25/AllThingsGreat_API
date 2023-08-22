@@ -21,7 +21,7 @@ async function downloadPDF(req, res) {
                   <style>${css}
                   html, body {
                     height: 1123px;
-                    background-color: #ebdfcb; 
+                    background-color: rgb(229 231 235); 
                     margin: 0;
                     padding: 0;
                 }
