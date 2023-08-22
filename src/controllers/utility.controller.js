@@ -18,7 +18,14 @@ async function downloadPDF(req, res) {
     const fullHtml = `
           <html>
               <head>
-                  <style>${css}</style>
+                  <style>${css}
+                  html, body {
+                    height: 1123px;
+                    background-color: #ebdfcb; 
+                    margin: 0;
+                    padding: 0;
+                }
+                </style>
               </head>
               <body>
               ${html}
