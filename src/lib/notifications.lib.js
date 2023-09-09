@@ -1,9 +1,10 @@
 const { sendEmail } = require("./email.lib");
 
 exports.sendFirstServiceEmail = async (data) => {
+  let mailList = ["samathayearry@gmail.com"];
   let options = {
     from: data.email,
-    to: "foleyb25@gmail.com",
+    to: mailList,
     subject: `[MESSAGE FROM https://firstservicegroup.net] ${data.subject}`,
     text: `
     Message from ${data.fullName}
