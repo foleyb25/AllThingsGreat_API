@@ -1,6 +1,8 @@
 const puppeteer = require("puppeteer");
 const { createLogger } = require("../lib/logger.lib");
 const logger = createLogger();
+const { sendFirstServiceEmail } = require("../lib/notifications.lib");
+const autoCatch = require("../lib/auto_catch.lib");
 
 async function downloadPDF(req, res) {
   try {
@@ -67,6 +69,14 @@ async function downloadPDF(req, res) {
   }
 }
 
-module.exports = {
-  downloadPDF,
+const sendEmail = async (req, res) => {
+  const data = req.body;
+
+  const info = await sendFirstServiceEmail(data);
+  res.status(200).send(`Successfully sent email. INFO: ${info}`);
 };
+
+module.exports = autoCatch({
+  downloadPDF,
+  sendEmail,
+});

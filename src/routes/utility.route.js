@@ -10,4 +10,6 @@ const Utility = require("../controllers/utility.controller");
 
 router.post("/downloadPDF", Utility.downloadPDF);
 
+router.post("/sendEmail", Utility.sendEmail);
+
 module.exports = router;
