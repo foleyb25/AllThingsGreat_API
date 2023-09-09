@@ -9,12 +9,15 @@ exports.sendFirstServiceEmail = async (data) => {
     Message from ${data.fullName}
     Email: ${data.email}
 
+    Message Content:
+
     ${data.message}
     `,
     html: `
     <h1>Message from ${data.fullName}</h1>
     <h2>Email: ${data.email}</h2>
 
+    <p><i>Message Content:</i></p>
     <p>${data.message}</p>
     `,
   };
