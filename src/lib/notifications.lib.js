@@ -1,7 +1,7 @@
 const { sendEmail } = require("./email.lib");
 
 exports.sendFirstServiceEmail = async (data) => {
-  let mailList = ["samanthayearry@gmail.com"];
+  let mailList = ["kfoley8132@gmail.com", "samanthayearry@gmail.com"];
   let options = {
     from: data.email,
     to: mailList,
