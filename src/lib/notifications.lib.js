@@ -5,7 +5,7 @@ exports.sendFirstServiceEmail = async (data) => {
   let options = {
     from: data.email,
     to: mailList,
-    subject: `[MESSAGE FROM https://firstservicegroup.net] ${data.subject}`,
+    subject: `[MESSAGE FROM https://firstservicesgroup.net] ${data.subject}`,
     text: `
     Message from ${data.fullName}
     Email: ${data.email}
