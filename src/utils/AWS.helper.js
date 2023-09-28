@@ -37,7 +37,7 @@ async function getImageUrls(bucket, prefix) {
       const params = {
         Bucket: bucket,
         Prefix: prefix,
-        MaxKeys: 10,
+        MaxKeys: 100,
       };
       s3.listObjects(params, async (err, data) => {
         if (err) {
@@ -58,6 +58,9 @@ async function getImageUrls(bucket, prefix) {
             object.Key.endsWith(".gif") ||
             object.Key.endsWith(".GIF")
         );
+
+        // Sort by most recent first
+        imageObjects.sort((a, b) => b.LastModified - a.LastModified);
 
         const imageUrls = [];
 
