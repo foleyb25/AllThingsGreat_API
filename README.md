@@ -1,13 +1,5 @@
 # AllThingsGreat-API
 
-All Things Great is a place where people go to escape the the BS of the Main Stream Media. We aim to write with a high degree of creativity, wittiness, sarcasm, informativeness, and topics that leave the reader with a boost a confidence. We steer clear from politics, unless a joke comes to be, to make for the last best place on the internet.
-
-We indulge in locker room talk and walk on the hot coals of twisted humor. Covering sports, achievements, history, entertainment, and topics that make up of greatness - with our own unique take.
-
-This is All Things Great
-
----
-
 ## Table of Contents
 * [Application](#application)
 * [Getting Started](#getting-started)
